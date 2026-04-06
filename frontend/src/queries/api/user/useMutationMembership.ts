@@ -14,27 +14,16 @@ export const postMembership: TypeFetchList<TypePostMembershipResult, null, TypeP
   key,
   { subscriptionCode },
 ) => {
-  // TODO
-  // const token = await getToken()
-  // const { data } = await axios.post(
-  //   `${process.env.NEXT_PUBLIC_API_URL}/api/membership`,
-  //   {
-  //     subscriptionCode
-  //   },
-  //   {
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   },
-  // )
+  const token = await getToken()
   const { data } = await axios.post(
-    `${process.env.NEXT_PUBLIC_API_MOCKING_URL}/mocks/user/membership`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/membership`,
     {
       subscriptionCode,
     },
     {
       headers: {
-        //
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     },
   )
