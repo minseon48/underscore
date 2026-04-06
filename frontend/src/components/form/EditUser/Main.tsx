@@ -6,7 +6,7 @@ import FormHoc, { FormHocMainProps } from "@/components/entry/FormHoc"
 import { TypeEditUser } from "@/components/form/EditUser"
 import Icon from "@/components/general/Icon"
 import Label from "@/components/entry/Label"
-import Input from "@/components/entry/Input"
+import Input from "@/components/entry/input"
 import Helper from "@/components/entry/Helper"
 
 export interface EditUserMainProps<T extends FieldValues = TypeEditUser> extends FormHocMainProps<T> {
