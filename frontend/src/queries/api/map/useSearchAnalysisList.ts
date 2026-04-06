@@ -23,26 +23,15 @@ export const fetchSearchAnalysisList: TypeFetchList<
   TypeAnalysisListAllId,
   TypeAnalysisListAllFilter
 > = async (page, { level, searchBounds, businessCode }) => {
-  // TODO
-  // const token = await getToken()
-  // const { data } = await axios.get( `${process.env.NEXT_PUBLIC_API_URL}/api/map/business-attraction`, {
-  //   params: {
-  //     page,
-  //     rect: searchBounds.join(","),
-  //     serviceIndustryCode: businessCode,
-  //   },
-  //   headers: {
-  //     Authorization: `Bearer ${token}`,
-  //   },
-  // })
-  const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_MOCKING_URL}/mocks/map/business-attraction`, {
+  const token = await getToken()
+  const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/map/business-attraction`, {
     params: {
       page,
       rect: searchBounds.join(","),
       serviceIndustryCode: businessCode,
     },
     headers: {
-      //
+      Authorization: `Bearer ${token}`,
     },
   })
   return data
