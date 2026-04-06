@@ -7,7 +7,7 @@ import useFocusTrap from "@/libs/hook/useFocusTrap"
 import { SelectShape } from "@/components/entry/Select/type"
 import SelectGroup from "@/components/entry/Select/Group"
 import SelectLabel from "@/components/entry/Select/Label"
-import SelectItem from "@/components/entry/Select/Item"
+import SelectItem from "@/components/entry/Select/item"
 import Icon from "@/components/general/Icon"
 
 interface OptionGroups<T extends FieldValues = object> {

@@ -8,7 +8,7 @@ import FormHoc, { FormHocMainProps } from "@/components/entry/FormHoc"
 import { TypeSearchLocation } from "@/components/form/SearchLocation"
 import Icon from "@/components/general/Icon"
 import Label from "@/components/entry/Label"
-import Input from "@/components/entry/Input"
+import Input from "@/components/entry/input"
 
 export interface SearchLocationMainProps<T extends FieldValues = TypeSearchLocation> extends FormHocMainProps<T> {
   //

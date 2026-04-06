@@ -16,15 +16,11 @@ export type TypeSearchMembershipResult = {
 }
 
 export const fetchSearchMembership: TypeFetchList<TypeSearchMembershipResult, null> = async (key) => {
-  // TODO
-  // const token = await getToken()
-  // const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/membership`, {
-  //   headers: {
-  //     Authorization: `Bearer ${token}`,
-  //   },
-  // })
-  const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_MOCKING_URL}/mocks/user/membership`, {
-    //
+  const token = await getToken()
+  const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/membership`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   })
   return data
 }

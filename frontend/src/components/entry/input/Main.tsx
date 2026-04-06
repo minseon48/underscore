@@ -3,7 +3,7 @@
 import styled, { css } from "styled-components"
 import { useController, Control, FieldValues, FieldPath, RegisterOptions } from "react-hook-form"
 import { NonUndefined } from "@/libs/utils"
-import { InputSize } from "@/components/entry/Input/type"
+import { InputSize } from "@/components/entry/input/type"
 
 export interface InputMainProps<T extends FieldValues = object> extends React.HTMLAttributes<HTMLInputElement> {
   control: Control<T>
