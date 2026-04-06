@@ -11,15 +11,11 @@ export type TypeSearchProfileResult = {
 }
 
 export const fetchSearchProfile: TypeFetchList<TypeSearchProfileResult, null> = async (key) => {
-  // TODO
-  // const token = await getToken()
-  // const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/profile`, {
-  //   headers: {
-  //     Authorization: `Bearer ${token}`,
-  //   },
-  // })
-  const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_MOCKING_URL}/mocks/user/profile`, {
-    //
+  const token = await getToken()
+  const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/profile`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   })
   return data
 }

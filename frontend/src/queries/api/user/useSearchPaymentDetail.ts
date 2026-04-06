@@ -24,19 +24,10 @@ export type TypeSearchPaymentDetailResult = {
 export const fetchSearchPaymentDetail: TypeFetchList<TypeSearchPaymentDetailResult, TypePaymentDetailId> = async (
   id,
 ) => {
-  // TODO
-  // const token = await getToken()
-  // const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/payment/${id}`, {
-  //   params: {
-  //
-  //   },
-  //   headers: {
-  //     Authorization: `Bearer ${token}`,
-  //   },
-  // })
-  const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_MOCKING_URL}/mocks/user/payment/${id}`, {
-    params: {
-      //
+  const token = await getToken()
+  const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/payment/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
     },
   })
   return data

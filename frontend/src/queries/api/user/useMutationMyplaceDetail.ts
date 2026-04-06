@@ -21,23 +21,9 @@ export const postMyplaceDetail: TypeFetchList<TypePostMyplaceDetailResult, null,
   key,
   { id, addressName, coordinates },
 ) => {
-  // TODO
-  // const token = await getToken()
-  // const { data } = await axios.post(
-  //   `${process.env.NEXT_PUBLIC_API_URL}/api/myplace`,
-  //   {
-  //     id,
-  //     addressName,
-  //     coordinates,
-  //   },
-  //   {
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   },
-  // )
+  const token = await getToken()
   const { data } = await axios.post(
-    `${process.env.NEXT_PUBLIC_API_MOCKING_URL}/mocks/user/myplace`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/myplace`,
     {
       id,
       addressName,
@@ -45,7 +31,8 @@ export const postMyplaceDetail: TypeFetchList<TypePostMyplaceDetailResult, null,
     },
     {
       headers: {
-        //
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     },
   )
@@ -55,16 +42,10 @@ export const postMyplaceDetail: TypeFetchList<TypePostMyplaceDetailResult, null,
 export const deleteMyplaceDetail: TypeFetchList<TypeDeleteMyplaceDetailResult, TypeMyplaceDetailDefaultId> = async (
   id,
 ) => {
-  // TODO
-  // const token = await getToken()
-  // const { data } = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/myplace/${id}`,{
-  //   headers: {
-  //     Authorization: `Bearer ${token}`,
-  //   },
-  // })
-  const { data } = await axios.delete(`${process.env.NEXT_PUBLIC_API_MOCKING_URL}/mocks/user/myplace/${id}`, {
+  const token = await getToken()
+  const { data } = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/myplace/${id}`, {
     headers: {
-      //
+      Authorization: `Bearer ${token}`,
     },
   })
   return data
