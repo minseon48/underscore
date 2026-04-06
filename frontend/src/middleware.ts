@@ -9,7 +9,17 @@ export function middleware(request: NextRequest) {
   // const allCookies = request.cookies.getAll()
   // const allHeaders = request.headers.entries()
 
-  if (/^\/$/.test(request.nextUrl.pathname)) {
+  if (request.nextUrl.pathname === "/"){
+    return NextResponse.redirect(new URL("/auth/join", request.url))
+  }
+
+  const isDev = process.env.NODE_ENV === "development"
+
+  if (!isDev && /^\/$/.test(request.nextUrl.pathname)) {
+    return NextResponse.redirect(new URL("/map", request.url))
+  }
+
+  if (!isDev && /^\/guide$/.test(request.nextUrl.pathname)) {
     return NextResponse.redirect(new URL("/map", request.url))
   }
 
