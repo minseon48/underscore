@@ -7,7 +7,7 @@ import FormHoc, { FormHocMainProps } from "@/components/entry/FormHoc"
 import { TypePaymentPeriodCode, TypePaymentStateCode, TypeSearchPayment } from "@/components/form/SearchPayment"
 import Icon from "@/components/general/Icon"
 import Label from "@/components/entry/Label"
-import Input from "@/components/entry/Input"
+import Input from "@/components/entry/input"
 import Button from "@/components/general/Button"
 import Select from "@/components/entry/Select"
 

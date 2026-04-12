@@ -15,29 +15,17 @@ export const postProfile: TypeFetchList<TypePostProfileResult, null, TypePostPro
   key,
   { name, email },
 ) => {
-  // TODO
-  // const token = await getToken()
-  // const { data } = await axios.post(
-  //   `${process.env.NEXT_PUBLIC_API_URL}/api/profile`,
-  //   {
-  //     name,
-  //     email,
-  //   },
-  //   {
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   },
-  // )
+  const token = await getToken()
   const { data } = await axios.post(
-    `${process.env.NEXT_PUBLIC_API_MOCKING_URL}/mocks/user/profile`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/profile`,
     {
       name,
       email,
     },
     {
       headers: {
-        //
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     },
   )

@@ -30,27 +30,17 @@ export const fetchSearchPaymentList: TypeFetchList<
   TypePaymentListAllId,
   TypePaymentListAllFilter
 > = async (page, { size, paymentPeriodCode, paymentStateCode, startDate, endDate }) => {
-  // TODO
-  // const token = await getToken()
-  // const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/payment`, {
-  //   params: {
-  //     size,
-  //     paymentPeriodCode,
-  //     paymentStateCode,
-  //     startDate,
-  //     endDate,
-  //   },
-  //   headers: {
-  //     Authorization: `Bearer ${token}`,
-  //   },
-  // })
-  const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_MOCKING_URL}/mocks/user/payment`, {
+  const token = await getToken()
+  const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/payment`, {
     params: {
       size,
       paymentPeriodCode,
       paymentStateCode,
       startDate,
       endDate,
+    },
+    headers: {
+      Authorization: `Bearer ${token}`,
     },
   })
   return data
