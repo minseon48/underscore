@@ -1,65 +1,63 @@
 package com.kodong.underscore.map.entity;
 
-import com.kodong.underscore.map.dto.AdministrativeDistrictDTO;
+import com.kodong.underscore.map.dto.LegalDistrictDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class AdministrativeDistrict {
-
+public class LegalDistrict {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
 
-    //시,도
+    // 시,도
     private String siDo;
 
-    //시,군,구
+    // 시,군,구
     private String siGunGu;
 
-    //행정동
+    // 행정구역 명
+    private String administrativeDistrictName;
+
+    // 행정동
     private String administrativeDong;
 
-    //행정구역 분류
+    // 법정동
+    private String legalDong;
+
+    // 행정구역 분류
     private String administrativeClassification;
 
-    //행정기관 코드
+    // 행정기관 코드
     private String administrativeCode;
 
-    //행정기관 생성일
+    // 행정기관 생성일
     private String administrativeOrganizationCreationDate;
 
-    //x좌표, 경도
-    private double xLongitude;
+    // 법정동 코드
+    private String legalDistrictCode;
 
-    //y좌표, 위도
-    private double yLatitude;
+    // 행정구역 영문명
+    private String administrativeDistrictEnglishName;
 
     @Builder
-    public AdministrativeDistrict(AdministrativeDistrictDTO dto){
+    public LegalDistrict(LegalDistrictDTO dto){
         this.siDo = dto.getSiDo();
         this.siGunGu = dto.getSiGunGu();
+        this.administrativeDistrictName = dto.getAdministrativeDistrictName();
         this.administrativeDong = dto.getAdministrativeDong();
+        this.legalDong = dto.getLegalDong();
         this.administrativeClassification = dto.getAdministrativeClassification();
         this.administrativeCode = dto.getAdministrativeCode();
         this.administrativeOrganizationCreationDate = dto.getAdministrativeOrganizationCreationDate();
-        this.xLongitude = dto.getXLongitude();
-        this.yLatitude = dto.getYLatitude();
-    }
-
-    //시·도, 군·구와 행정동 모두 포함한 주소 반환하는 메서드
-    public String getFullAddress(){
-        return siDo + " " +
-                siGunGu + " " +
-                administrativeDong;
-
+        this.legalDistrictCode = dto.getLegalDistrictCode();
+        this.administrativeDistrictEnglishName = dto.getAdministrativeDistrictEnglishName();
     }
 }
