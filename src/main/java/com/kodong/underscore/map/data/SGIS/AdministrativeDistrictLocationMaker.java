@@ -1,6 +1,6 @@
 package com.kodong.underscore.map.data.SGIS;
 
-import com.kodong.underscore.map.data.GlobalData;
+import com.kodong.underscore.map.data.SgisAccessTokenHolder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +16,7 @@ import java.net.URI;
 @Component
 public class AdministrativeDistrictLocationMaker {
 
-    private final GlobalData globalData;
+    private final SgisAccessTokenHolder sgisAccessTokenHolder;
 
     @Value("spring.sgis.consumer-key")
     private String consumerKey;
@@ -37,7 +37,7 @@ public class AdministrativeDistrictLocationMaker {
             log.info("SGIS Token 요청 결과 NULL입니다.");
         }
 
-        globalData.updateTokenForSGIS(response.getSgisResult().getAccessToken());
+        sgisAccessTokenHolder.updateTokenForSGIS(response.getSgisResult().getAccessToken());
 
     }
 
@@ -46,7 +46,7 @@ public class AdministrativeDistrictLocationMaker {
         RestClient restClient = RestClient.builder().build();
 
         Response<SGISLocationResult> response = restClient.get()
-                .uri(uriMaker(globalData.getTokenForSGIS(), address))
+                .uri(uriMaker(sgisAccessTokenHolder.getTokenForSGIS(), address))
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {});
 
