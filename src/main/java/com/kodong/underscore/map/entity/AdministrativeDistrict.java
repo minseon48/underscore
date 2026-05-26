@@ -54,4 +54,12 @@ public class AdministrativeDistrict {
         this.xLongitude = dto.getXLongitude();
         this.yLatitude = dto.getYLatitude();
     }
+
+    //시·도, 군·구와 행정동 모두 포함한 주소 반환하는 메서드
+    public String getFullAddress(){
+        return siDo + " " +
+                siGunGu + " " +
+                administrativeDong;
+
+    }
 }
