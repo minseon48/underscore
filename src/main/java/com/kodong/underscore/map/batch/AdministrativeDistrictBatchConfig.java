@@ -16,6 +16,7 @@ import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.data.RepositoryItemReader;
 import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.database.JpaItemWriter;
@@ -27,9 +28,12 @@ import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Configuration
@@ -147,6 +151,25 @@ public class AdministrativeDistrictBatchConfig {
                 .sql("UPDATE AdministrativeDistrict SET xLongitude = :x, yLatitude = :y WHERE administrativeClassification = :admCd")
                 .dataSource(dataSource)
                 .build();
+    }
+
+
+    @Bean
+    public RepositoryItemReader<AdministrativeDistrict> administrativeDistrictRepositoryItemReader(AdministrativeDistrictRepository administrativeDistrictRepository) {
+        RepositoryItemReader<AdministrativeDistrict> reader = new RepositoryItemReader<>();
+
+        reader.setRepository(administrativeDistrictRepository);
+        reader.setMethodName("findAll"); // Repository의 메소드 이름
+
+        // 정렬 조건 설정
+        Map<String, Sort.Direction> sortMap = new HashMap<>();
+        sortMap.put("id", Sort.Direction.ASC); // 예: ID 기준 오름차순 정렬
+        reader.setSort(sortMap);
+
+        // 페이지 크기 설정 (예: Chunk 크기와 일치)
+        reader.setPageSize(10);
+
+        return reader;
     }
 }
 

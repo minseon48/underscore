@@ -30,7 +30,7 @@ public class CustomLogoutFilter extends GenericFilterBean {
         //path and method verify
         String requestUri = request.getRequestURI();
 
-        if(requestUri.matches("^\\/logout$")){
+        if(!requestUri.matches("^\\/logout$")){
             filterChain.doFilter(request,response);
             return;
         }
@@ -77,7 +77,7 @@ public class CustomLogoutFilter extends GenericFilterBean {
         }
 
         //DB에 저장되어 있는 지 확인
-        Boolean isExist = refreshTokenRepository.existsByRefresh(refresh);
+        Boolean isExist = refreshTokenRepository.existsByToken(refresh);
 
         if(!isExist){
             //response status code
@@ -87,7 +87,7 @@ public class CustomLogoutFilter extends GenericFilterBean {
 
         //로그아웃 진행
         //Refresh 토큰 DB에서 제거
-        refreshTokenRepository.deleteByRefreshToken(refresh);
+        refreshTokenRepository.deleteByToken(refresh);
 
         //Refresh 토큰 Cookie 값 0
         Cookie cookie = new Cookie("refresh", null);

@@ -15,6 +15,6 @@ public interface SellingRepository extends JpaRepository<Selling,Long> {
             String standardYearQuarterCode, AdministrativeDistrict administrativeDistrict, ServiceIndustry serviceIndustry
     );
 
-    List<Selling> findAllByServiceIndustryAndStandardYearQuarterCodeOrderByThsmonSelngAmt(ServiceIndustry serviceIndustry, String standardYearQuarterCode);
+    List<Selling> findAllByServiceIndustryAndStandardYearQuarterCodeOrderByThisMonthSellingAmt(ServiceIndustry serviceIndustry, String standardYearQuarterCode);
 
 }

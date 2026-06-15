@@ -24,13 +24,13 @@ public class BusinessAttractionBatchConfig {
     @Bean
     public Step businessAttractionInitStep(JobRepository jobRepository,
                                            PlatformTransactionManager transactionManager,
-                                           ItemReader<AdministrativeDistrict> administrativeDistrictItemReader,
+                                           ItemReader<AdministrativeDistrict> administrativeDistrictRepositoryItemReader,
                                            ItemProcessor<AdministrativeDistrict, List<BusinessAttraction>> businessAttractionProcessor,
                                            ItemWriter<List<BusinessAttraction>> businessAttractionItemListWriter){
 
         return new StepBuilder("businessAttractionInitStep", jobRepository)
                 .<AdministrativeDistrict, List<BusinessAttraction>>chunk(10,transactionManager)
-                .reader(administrativeDistrictItemReader)
+                .reader(administrativeDistrictRepositoryItemReader)
                 .processor(businessAttractionProcessor)
                 .writer(businessAttractionItemListWriter)
                 .build();

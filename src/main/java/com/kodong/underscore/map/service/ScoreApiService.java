@@ -113,7 +113,7 @@ public class ScoreApiService {
 
         for(ServiceIndustry serviceIndustry : serviceIndustryList){
             sellingData = sellingRepository
-                    .findAllByServiceIndustryAndStandardYearQuarterCodeOrderByThsmonSelngAmt(serviceIndustry,businessAttractionScoringContext.getStandardYearQuarterCode());
+                    .findAllByServiceIndustryAndStandardYearQuarterCodeOrderByThisMonthSellingAmt(serviceIndustry,businessAttractionScoringContext.getStandardYearQuarterCode());
 
             thresholds = new ArrayList<>();
 
@@ -166,7 +166,7 @@ public class ScoreApiService {
 
     /*유동인구 점수 기준 수정*/
     private void updateFloatingPopulationThresholds(){
-        List<FloatingPopulation> floatingPopulationData = floatingPopulationRepository.findAllByStandardYearQuarterCodeOrderByTotFloatingPopulationCoAsc(businessAttractionScoringContext.getStandardYearQuarterCode());
+        List<FloatingPopulation> floatingPopulationData = floatingPopulationRepository.findAllByStandardYearQuarterCodeOrderByTotFlpopCoAsc(businessAttractionScoringContext.getStandardYearQuarterCode());
         List<Integer> thresholds = new ArrayList<>();
 
         int num = 0;
