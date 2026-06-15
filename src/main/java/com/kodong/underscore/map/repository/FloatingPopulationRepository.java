@@ -14,6 +14,6 @@ import java.util.Optional;
 public interface FloatingPopulationRepository extends JpaRepository<FloatingPopulation,Long> {
     Optional<FloatingPopulation> findByStandardYearQuarterCodeAndAdministrativeDistrict(String standardYearQuarterCode, AdministrativeDistrict administrativeDistrictCode);
     Page<FloatingPopulation> findByStandardYearQuarterCode(String standardYearQuarterCode, Pageable pageable);
-    List<FloatingPopulation> findAllByStandardYearQuarterCodeOrderByTotFloatingPopulationCoAsc(String standardYearQuarterCode);
+    List<FloatingPopulation> findAllByStandardYearQuarterCodeOrderByTotFlpopCoAsc(String standardYearQuarterCode);
 
 }
