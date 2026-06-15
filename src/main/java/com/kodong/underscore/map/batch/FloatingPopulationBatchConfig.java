@@ -51,6 +51,7 @@ public class FloatingPopulationBatchConfig {
     }
 
 
+    @Bean
     public FlatFileItemReader<FloatingPopulationDTO> floatingPopulationItemInputReader(){
         FlatFileItemReader<FloatingPopulationDTO> reader = new FlatFileItemReader<>();
 
