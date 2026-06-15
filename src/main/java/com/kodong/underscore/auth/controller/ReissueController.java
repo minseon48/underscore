@@ -64,7 +64,7 @@ public class ReissueController {
         }
 
         //DB에 refresh가 저장되어 있는 지 확인
-        Boolean isExist = refreshTokenRepository.existsByRefresh(refresh);
+        Boolean isExist = refreshTokenRepository.existsByToken(refresh);
 
         if(!isExist){
             //response body
@@ -82,7 +82,7 @@ public class ReissueController {
 
 
         //Refresh 토큰 저장 DB에 기존의 Refresh 토큰 삭제 후 새 Refresh 토큰 저장
-        refreshTokenRepository.deleteByRefreshToken(refresh);
+        refreshTokenRepository.deleteByToken(refresh);
         addRefreshToken(username, newRefresh, 86400000L);
 
         //response
