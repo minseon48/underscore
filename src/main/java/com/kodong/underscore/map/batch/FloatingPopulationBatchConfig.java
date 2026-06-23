@@ -66,6 +66,8 @@ public class FloatingPopulationBatchConfig {
         fieldSetMapper.setTargetType(FloatingPopulationDTO.class);
 
         DefaultLineMapper<FloatingPopulationDTO> lineMapper = new DefaultLineMapper<>();
+        lineMapper.setLineTokenizer(tokenizer);
+        lineMapper.setFieldSetMapper(fieldSetMapper);
 
         reader.setLineMapper(lineMapper);
 
