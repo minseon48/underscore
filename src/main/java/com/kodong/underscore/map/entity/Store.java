@@ -25,9 +25,9 @@ public class Store {
     private String standardYearQuarterCode;
     private int storeCount;//점포 수
     private int similarIndustryStoreCount;//유사 업종 점포 수
-    private int openingBusinessRate;//개업률
+    private double openingBusinessRate;//개업률
     private int openingBusinessStoreCount;//개업 점포 수
-    private int closingBusinessRate;//폐업률
+    private double closingBusinessRate;//폐업률
     private int closingBusinessStoreCount;//폐업 점포 수
     private int franchiseStoreCount;//프랜차이즈 점포 수
 
