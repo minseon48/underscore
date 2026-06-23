@@ -33,7 +33,7 @@ public enum ServiceName {
                               new String[]{
         "standardYearQuarterCode", "adstrdCode", "adstrdCodeName",
                 "monthlyAverageIncomeAmount", "incomeSectionCode",
-                "totalExpenditureAmount", "foodStaffsExpenditureAmount", "clothesFootwearExpenditureAmount", "leisureSpecialExpenditureAmount",
+                "totalExpenditureAmount", "groceriesExpenditureAmount", "clothesFootwearExpenditureAmount", "leisureSpecialExpenditureAmount",
                 "medicalCarePharmacyExpenditureAmount", "transportExpenditureAmount", "educationExpenditureAmount",
                 "pleasureExpenditureAmount", "leisureCultureExpenditureAmount", "etcExpenditureAmount", "foodExpenditureAmount"
     }),
@@ -53,25 +53,25 @@ public enum ServiceName {
                     new String[]{
         "standardYearQuarterCode", "adstrdCode", "adstrdCodeName",
                 "serviceIndustryCode", "serviceIndustryCodeName",
-                "thsmonSelngAmt", "thsmonSelngCo",
-                "mdwkSelngAmt", "wkendSelngAmt",
-                "monSelngAmt", "tuesSelngAmt", "wedSelngAmt", "thurSelngAmt", "friSelngAmt", "satSelngAmt", "sunSelngAmt",
-                "tmzon0006SelngAmt", "tmzon0611SelngAmt", "tmzon1114SelngAmt", "tmzon1417SelngAmt", "tmzon1721SelngAmt", "tmzon2124SelngAmt",
-                "mlSelngAmt", "fmlSelngAmt",
-                "agrde10SelngAmt", "agrde20SelngAmt", "agrde30SelngAmt", "agrde40SelngAmt", "agrde50SelngAmt", "agrde60AboveSelngAmt",
-                "mdwkSelngCo", "wkendSelngCo",
-                "monSelngCo", "tuesSelngCo", "wedSelngCo", "thurSelngCo", "friSelngCo", "satSelngCo", "sunSelngCo",
-                "tmzon0006SelngCo", "tmzon0611SelngCo", "tmzon1114SelngCo", "tmzon1417SelngCo", "tmzon1721SelngCo", "tmzon2124SelngCo",
-                "mlSelngCo", "fmlSelngCo",
-                "agrde10SelngCo", "agrde20SelngCo", "agrde30SelngCo", "agrde40SelngCo", "agrde50SelngCo", "agrde60AboveSelngCo"
+                "thisMonthSellingAmt", "thisMonthSellingCount",
+                "midweekSellingAmt", "weekendSellingAmt",
+                "monSellingAmt", "tuesSellingAmt", "wedSellingAmt", "thurSellingAmt", "friSellingAmt", "satSellingAmt", "sunSellingAmt",
+                "tmzon0006SellingAmt", "tmzon0611SellingAmt", "tmzon1114SellingAmt", "tmzon1417SellingAmt", "tmzon1721SellingAmt", "tmzon2124SellingAmt",
+                "mlSellingAmt", "fmlSellingAmt",
+                "ageGrade10SellingAmt", "ageGrade20SellingAmt", "ageGrade30SellingAmt", "ageGrade40SellingAmt", "ageGrade50SellingAmt", "ageGrade60AboveSellingAmt",
+                "midweekSellingCount", "weekendSellingCount",
+                "monSellingCount", "tuesSellingCount", "wedSellingCount", "thurSellingCount", "friSellingCount", "satSellingCount", "sunSellingCount",
+                "tmzon0006SellingCount", "tmzon0611SellingCount", "tmzon1114SellingCount", "tmzon1417SellingCount", "tmzon1721SellingCount", "tmzon2124SellingCount",
+                "mlSellingCount", "fmlSellingCount",
+                "ageGrade10SellingCount", "ageGrade20SellingCount", "ageGrade30SellingCount", "ageGrade40SellingCount", "ageGrade50SellingCount", "ageGrade60AboveSellingCount"
     }),
 
     // 상권변화지표
     IndexQuarterlyQuotient( "IndexQuarterlyQuotientData.csv",
                                    new String[]{
         "standardYearQuarterCode", "adstrdCode", "adstrdCodeName",
-                "trdarChngeIx", "trdarChngeIxNm",
-                "oprSaleMtAvrg", "clsSaleMtAvrg", "suOprSaleMtAvrg", "suClsSaleMtAvrg"
+                "tradeAreaChangeIndex", "tradeAreaChangeIndexName",
+                "operatingSaleMonthAvg", "closeSaleMonthAvg", "seoulOperatingSaleMonthAvg", "seoulCloseSaleMonthAvg"
     });
 
     private final String csvFileName;
