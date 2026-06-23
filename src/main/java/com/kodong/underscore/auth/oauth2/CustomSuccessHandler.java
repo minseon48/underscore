@@ -32,7 +32,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
-        String username = customUserDetails.getName();
+        String username = customUserDetails.getUsername();
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
@@ -41,16 +41,23 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String role = auth.getAuthority();
 
         //토큰 생성
-        String accessToken = jwtUtil.createJwt("access",username, role, 600000L);//10분
+      //  String accessToken = jwtUtil.createJwt("access",username, role, 600000L);10분
         String refreshToken = jwtUtil.createJwt("refresh",username,role,86400000L);//24시간
 
         addRefreshToken(username,refreshToken,86400000L);
 
         //응답 설정
-        response.addHeader("access",accessToken);
+       // response.addHeader("Authorization", "Bearer " + accessToken);
         response.addCookie(createCookie("refresh", refreshToken));
         response.setStatus(HttpStatus.OK.value());
-        response.sendRedirect("http://localhost:3001/auth/join/complete");
+
+
+
+        if(customUserDetails.isNewUser()){
+            response.sendRedirect("http://localhost:3001/auth/join/complete");
+        }else{
+            response.sendRedirect("http://localhost:3001/map");
+        }
 
     }
 
