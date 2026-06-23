@@ -5,6 +5,8 @@ import com.kodong.underscore.map.entity.AdministrativeDistrict;
 import com.kodong.underscore.map.entity.IncomeConsumption;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 public class IncomeConsumptionDTO {
     @JsonProperty("STDR_YYQU_CD")
@@ -17,43 +19,43 @@ public class IncomeConsumptionDTO {
     private String adstrdCodeName;
 
     @JsonProperty("MT_AVRG_INCOME_AMT")
-    private long monthlyAverageIncomeAmount;
+    private BigDecimal monthlyAverageIncomeAmount;
 
     @JsonProperty("INCOME_SCTN_CD")
     private String incomeSectionCode;
 
     @JsonProperty("EXPNDTR_TOTAMT")
-    private long totalExpenditureAmount;
+    private BigDecimal totalExpenditureAmount;
 
     @JsonProperty("GC_EXPNDTR_TOTAMT")
-    private long groceriesExpenditureAmount;
+    private BigDecimal groceriesExpenditureAmount;
 
     @JsonProperty("CLTHS_FTWR_EXPNDTR_TOTAMT")
-    private long clothesFootwearExpenditureAmount;
+    private BigDecimal clothesFootwearExpenditureAmount;
 
     @JsonProperty("LVSPL_EXPNDTR_TOTAMT")
-    private long leisureSpecialExpenditureAmount;
+    private BigDecimal leisureSpecialExpenditureAmount;
 
     @JsonProperty("MCP_EXPNDTR_TOTAMT")
-    private long medicalCarePharmacyExpenditureAmount;
+    private BigDecimal medicalCarePharmacyExpenditureAmount;
 
     @JsonProperty("TRNSPORT_EXPNDTR_TOTAMT")
-    private long transportExpenditureAmount;
+    private BigDecimal transportExpenditureAmount;
 
     @JsonProperty("EDC_EXPNDTR_TOTAMT")
-    private long educationExpenditureAmount;
+    private BigDecimal educationExpenditureAmount;
 
     @JsonProperty("PLESR_EXPNDTR_TOTAMT")
-    private long pleasureExpenditureAmount;
+    private BigDecimal pleasureExpenditureAmount;
 
     @JsonProperty("LSR_CLTUR_EXPNDTR_TOTAMT")
-    private long leisureCultureExpenditureAmount;
+    private BigDecimal leisureCultureExpenditureAmount;
 
     @JsonProperty("ETC_EXPNDTR_TOTAMT")
-    private long etcExpenditureAmount;
+    private BigDecimal etcExpenditureAmount;
 
     @JsonProperty("FD_EXPNDTR_TOTAMT")
-    private long foodExpenditureAmount;
+    private BigDecimal foodExpenditureAmount;
 
 
     public IncomeConsumption convertToIncomeConsumption(AdministrativeDistrict dong, IncomeConsumptionDTO incomeConsumptionDTO){
