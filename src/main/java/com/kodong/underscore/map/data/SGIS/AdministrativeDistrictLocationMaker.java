@@ -18,10 +18,10 @@ public class AdministrativeDistrictLocationMaker {
 
     private final SgisAccessTokenHolder sgisAccessTokenHolder;
 
-    @Value("spring.sgis.consumer-key")
+    @Value("${spring.sgis.consumer-key}")
     private String consumerKey;
 
-    @Value("spring.sgis.consumer-secret")
+    @Value("${spring.sgis.consumer-secret}")
     private String consumerSecret;
 
 

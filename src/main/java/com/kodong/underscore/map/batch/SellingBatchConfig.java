@@ -28,7 +28,11 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import java.beans.PropertyEditor;
+import java.beans.PropertyEditorSupport;
+import java.math.BigDecimal;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -62,6 +66,15 @@ public class SellingBatchConfig {
 
         BeanWrapperFieldSetMapper<SellingDTO> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
         fieldSetMapper.setTargetType(SellingDTO.class);
+
+        Map<Class<?>, PropertyEditor> customEditors = new HashMap<>();
+        customEditors.put(BigDecimal.class, new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) {
+                setValue(new BigDecimal(text.trim()));
+            }
+        });
+        fieldSetMapper.setCustomEditors(customEditors);
 
         DefaultLineMapper<SellingDTO> lineMapper = new DefaultLineMapper<>();
         lineMapper.setLineTokenizer(tokenizer);
@@ -159,10 +172,10 @@ public class SellingBatchConfig {
         };
     }
 
-    private int calculateScore(long thisMonSellingAmt,List<Long>  thresholds) {
-        if (thisMonSellingAmt <= thresholds.get(0)) return 5;
-        else if (thisMonSellingAmt <= thresholds.get(1)) return 10;
-        else if (thisMonSellingAmt <= thresholds.get(2)) return 15;
+    private int calculateScore(BigDecimal thisMonSellingAmt, List<Long> thresholds) {
+        if (thisMonSellingAmt.compareTo(BigDecimal.valueOf(thresholds.get(0))) <= 0) return 5;
+        else if (thisMonSellingAmt.compareTo(BigDecimal.valueOf(thresholds.get(1))) <= 0) return 10;
+        else if (thisMonSellingAmt.compareTo(BigDecimal.valueOf(thresholds.get(2))) <= 0) return 15;
         else return 20;
     }
 }

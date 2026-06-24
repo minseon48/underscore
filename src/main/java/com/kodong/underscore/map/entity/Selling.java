@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Getter
 @NoArgsConstructor
 @Entity
@@ -24,54 +26,54 @@ public class Selling {
 
 
     private String standardYearQuarterCode;
-    private long thisMonthSellingAmt;//당월 매출 금액
-    private long thisMonthSellingCount;//당월 매출 건수
-    private long midweekSellingAmt;//주중 매출 금액
-    private long weekendSellingAmt;//주말 매출 금액
-    private long monSellingAmt;//월요일 매출 금액
-    private long tuesSellingAmt;//화요일 매출 금액
-    private long wedSellingAmt;//수요일 매출 금액
-    private long thurSellingAmt;//목요일 매출 금액
-    private long friSellingAmt;//금요일 매출 금액
-    private long satSellingAmt;//토요일 매출 금액
-    private long sunSellingAmt;//일요일 매출 금액
-    private long tmzon0006SellingAmt;//00시~06시
-    private long tmzon0611SellingAmt;//06시~11시
-    private long tmzon1114SellingAmt;//11시~14시
-    private long tmzon1417SellingAmt;//14시~17시
-    private long tmzon1721SellingAmt;//17시~21시
-    private long tmzon2124SellingAmt;//21시~24시
-    private long mlSellingAmt;//남성 매출 금액
-    private long fmlSellingAmt;//여성 매출 금액
-    private long ageGrade10SellingAmt;//10대 매출 금액
-    private long ageGrade20SellingAmt;//20대 매출 금액
-    private long ageGrade30SellingAmt;//30대 매출 금액
-    private long ageGrade40SellingAmt;//40대 매출 금액
-    private long ageGrade50SellingAmt;//50대 매출 금액
-    private long ageGrade60AboveSellingAmt;//60대 이상 매출 금액
-    private long midweekSellingCount;//주중 매출 건수
-    private long weekendSellingCount;//주말 매출 건수
-    private long monSellingCount;//월요일 매출 건수
-    private long tuesSellingCount;//화요일 매출 건수
-    private long wedSellingCount;//수요일 매출 건수
-    private long thurSellingCount;//목요일 매출 건수
-    private long friSellingCount;//금요일 매출 건수
-    private long satSellingCount;//토요일 매출 건수
-    private long sunSellingCount;//일요일 매출 건수
-    private long tmzon0006SellingCount;//00시~06시
-    private long tmzon0611SellingCount;//06시~11시
-    private long tmzon1114SellingCount;//11시~14시
-    private long tmzon1417SellingCount;//14시~17시
-    private long tmzon1721SellingCount;//17시~21시
-    private long tmzon2124SellingCount;//21시~24시
-    private long mlSellingCount;//남성 매출 건수
-    private long fmlSellingCount;//여성 매출 건수
-    private long ageGrade10SellingCount;//10대 매출 건수
-    private long ageGrade20SellingCount;//20대 매출 건수
-    private long ageGrade30SellingCount;//30대 매출 건수
-    private long ageGrade40SellingCount;//40대 매출 건수
-    private long ageGrade50SellingCount;//50대 매출 건수
-    private long ageGrade60AboveSellingCount;//60대 이상 매출 건수
+    private BigDecimal thisMonthSellingAmt;
+    private long thisMonthSellingCount;
+    private BigDecimal midweekSellingAmt;
+    private BigDecimal weekendSellingAmt;
+    private BigDecimal monSellingAmt;
+    private BigDecimal tuesSellingAmt;
+    private BigDecimal wedSellingAmt;
+    private BigDecimal thurSellingAmt;
+    private BigDecimal friSellingAmt;
+    private BigDecimal satSellingAmt;
+    private BigDecimal sunSellingAmt;
+    private BigDecimal tmzon0006SellingAmt;
+    private BigDecimal tmzon0611SellingAmt;
+    private BigDecimal tmzon1114SellingAmt;
+    private BigDecimal tmzon1417SellingAmt;
+    private BigDecimal tmzon1721SellingAmt;
+    private BigDecimal tmzon2124SellingAmt;
+    private BigDecimal mlSellingAmt;
+    private BigDecimal fmlSellingAmt;
+    private BigDecimal ageGrade10SellingAmt;
+    private BigDecimal ageGrade20SellingAmt;
+    private BigDecimal ageGrade30SellingAmt;
+    private BigDecimal ageGrade40SellingAmt;
+    private BigDecimal ageGrade50SellingAmt;
+    private BigDecimal ageGrade60AboveSellingAmt;
+    private long midweekSellingCount;
+    private long weekendSellingCount;
+    private long monSellingCount;
+    private long tuesSellingCount;
+    private long wedSellingCount;
+    private long thurSellingCount;
+    private long friSellingCount;
+    private long satSellingCount;
+    private long sunSellingCount;
+    private long tmzon0006SellingCount;
+    private long tmzon0611SellingCount;
+    private long tmzon1114SellingCount;
+    private long tmzon1417SellingCount;
+    private long tmzon1721SellingCount;
+    private long tmzon2124SellingCount;
+    private long mlSellingCount;
+    private long fmlSellingCount;
+    private long ageGrade10SellingCount;
+    private long ageGrade20SellingCount;
+    private long ageGrade30SellingCount;
+    private long ageGrade40SellingCount;
+    private long ageGrade50SellingCount;
+    private long ageGrade60AboveSellingCount;
 
     @Builder
     public Selling(AdministrativeDistrict dong, ServiceIndustry serviceIndustry, SellingDTO sellingDTO){

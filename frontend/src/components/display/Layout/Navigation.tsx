@@ -1,9 +1,10 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useMemo } from "react"
 import { usePathname } from "next/navigation"
 import styled, { css } from "styled-components"
 import useNavigation from "@/libs/hook/useNavigation"
+import useLogout from "@/libs/hook/useLogout"
 import useFocusTrap from "@/libs/hook/useFocusTrap"
 import Icon from "@/components/general/Icon"
 import Picture from "@/components/display/Picture"
@@ -67,12 +68,14 @@ const menuItems = [
   {
     key: "logout",
     label: "로그아웃",
-    onClick: () => console.log("logout"),
+    onClick: () => {},
   },
 ]
 
 const LayoutNavigation = (props: LayoutNavigationProps) => {
   const { className = "", ...restProps } = props
+
+  const { handleLogout } = useLogout()
 
   const pathname = usePathname()
   const currentPath = pathname.split("/").filter(Boolean)
@@ -91,7 +94,23 @@ const LayoutNavigation = (props: LayoutNavigationProps) => {
   useEffect(() => {
     if (isOpened && !isPending) onActivate()
     else onDeactivate()
-  }, [isOpened, isPending])
+  }, [isOpened, isPending, onActivate, onDeactivate])
+
+  const computedMenuItems = useMemo(
+    () =>
+      menuItems.map((item) =>
+        item.key === "logout"
+          ? {
+              ...item,
+              onClick: () => {
+                onClose()
+                handleLogout()
+              },
+            }
+          : item,
+      ),
+    [handleLogout, onClose],
+  )
 
   if (!isOpened && !isPending) return null
 
@@ -101,7 +120,9 @@ const LayoutNavigation = (props: LayoutNavigationProps) => {
       className={`${className}`}
       $isOpened={isOpened}
       $isPending={isPending}
-      onClick={(event) => event.target === containerRef.current && onClose()}
+      onClick={(event: React.MouseEvent<HTMLDivElement>) =>
+        event.target === containerRef.current && onClose()
+      }
       {...restProps}
     >
       <LayoutNavigationPanel tabIndex={0}>
@@ -111,7 +132,7 @@ const LayoutNavigation = (props: LayoutNavigationProps) => {
           </LayoutNavigationLogo>
         </LayoutNavigationHeader>
         <LayoutNavigationMenu
-          items={menuItems}
+          items={computedMenuItems}
           defaultOpenKeys={currentPath.slice(0, currentPath.length - 1)}
           defaultSelectedKeys={currentPath}
           onNavigated={onClose}
