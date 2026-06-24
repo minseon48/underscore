@@ -30,13 +30,13 @@ public class StoreDTO {
     private int similarIndustryStoreCount;
 
     @JsonProperty("OPBIZ_RT")
-    private int openingBusinessRate;
+    private double openingBusinessRate;
 
     @JsonProperty("OPBIZ_STOR_CO")
     private int openingBusinessStoreCount;
 
     @JsonProperty("CLSBIZ_RT")
-    private int closingBusinessRate;
+    private double closingBusinessRate;
 
     @JsonProperty("CLSBIZ_STOR_CO")
     private int closingBusinessStoreCount;
