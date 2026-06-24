@@ -122,7 +122,7 @@ public class ScoreApiService {
                 continue;
             }
             for(int i = 1 ; i < 4 ; i++){
-                num = sellingData.get(i*(sellingData.size()/4)).getThisMonthSellingAmt();
+                num = sellingData.get(i*(sellingData.size()/4)).getThisMonthSellingAmt().longValue();
                 thresholds.add(num);
             }
             sellingThresholdsByIndustryCode.put(serviceIndustry.getServiceIndustryCode(),thresholds);
@@ -158,7 +158,7 @@ public class ScoreApiService {
         long num = 0;
 
         for(int i = 1; i < 3; i++){
-            num = incomeConsumptionData.get(i*(incomeConsumptionData.size()/3)).getFoodExpenditureAmount();
+            num = incomeConsumptionData.get(i*(incomeConsumptionData.size()/3)).getFoodExpenditureAmount().longValue();
             thresholds.add(num);
         }
         businessAttractionScoringContext.updateIncomeConsumptionThresholds(thresholds);
