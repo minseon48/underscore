@@ -6,6 +6,8 @@ import com.kodong.underscore.map.entity.Selling;
 import com.kodong.underscore.map.entity.ServiceIndustry;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 public class SellingDTO {
     @JsonProperty("STDR_YYQU_CD")
@@ -24,79 +26,79 @@ public class SellingDTO {
     private String serviceIndustryCodeName;
 
     @JsonProperty("THSMON_SELNG_AMT")
-    private long thisMonthSellingAmt;
+    private BigDecimal thisMonthSellingAmt;
 
     @JsonProperty("THSMON_SELNG_CO")
     private long thisMonthSellingCount;
 
     @JsonProperty("MDWK_SELNG_AMT")
-    private long midweekSellingAmt;
+    private BigDecimal midweekSellingAmt;
 
     @JsonProperty("WKEND_SELNG_AMT")
-    private long weekendSellingAmt;
+    private BigDecimal weekendSellingAmt;
 
     @JsonProperty("MON_SELNG_AMT")
-    private long monSellingAmt;
+    private BigDecimal monSellingAmt;
 
     @JsonProperty("TUES_SELNG_AMT")
-    private long tuesSellingAmt;
+    private BigDecimal tuesSellingAmt;
 
     @JsonProperty("WED_SELNG_AMT")
-    private long wedSellingAmt;
+    private BigDecimal wedSellingAmt;
 
     @JsonProperty("THUR_SELNG_AMT")
-    private long thurSellingAmt;
+    private BigDecimal thurSellingAmt;
 
     @JsonProperty("FRI_SELNG_AMT")
-    private long friSellingAmt;
+    private BigDecimal friSellingAmt;
 
     @JsonProperty("SAT_SELNG_AMT")
-    private long satSellingAmt;
+    private BigDecimal satSellingAmt;
 
     @JsonProperty("SUN_SELNG_AMT")
-    private long sunSellingAmt;
+    private BigDecimal sunSellingAmt;
 
     @JsonProperty("TMZON_00_06_SELNG_AMT")
-    private long tmzon0006SellingAmt;
+    private BigDecimal tmzon0006SellingAmt;
 
     @JsonProperty("TMZON_06_11_SELNG_AMT")
-    private long tmzon0611SellingAmt;
+    private BigDecimal tmzon0611SellingAmt;
 
     @JsonProperty("TMZON_11_14_SELNG_AMT")
-    private long tmzon1114SellingAmt;
+    private BigDecimal tmzon1114SellingAmt;
 
     @JsonProperty("TMZON_14_17_SELNG_AMT")
-    private long tmzon1417SellingAmt;
+    private BigDecimal tmzon1417SellingAmt;
 
     @JsonProperty("TMZON_17_21_SELNG_AMT")
-    private long tmzon1721SellingAmt;
+    private BigDecimal tmzon1721SellingAmt;
 
     @JsonProperty("TMZON_21_24_SELNG_AMT")
-    private long tmzon2124SellingAmt;
+    private BigDecimal tmzon2124SellingAmt;
 
     @JsonProperty("ML_SELNG_AMT")
-    private long mlSellingAmt;
+    private BigDecimal mlSellingAmt;
 
     @JsonProperty("FML_SELNG_AMT")
-    private long fmlSellingAmt;
+    private BigDecimal fmlSellingAmt;
 
     @JsonProperty("AGRDE_10_SELNG_AMT")
-    private long ageGrade10SellingAmt;
+    private BigDecimal ageGrade10SellingAmt;
 
     @JsonProperty("AGRDE_20_SELNG_AMT")
-    private long ageGrade20SellingAmt;
+    private BigDecimal ageGrade20SellingAmt;
 
     @JsonProperty("AGRDE_30_SELNG_AMT")
-    private long ageGrade30SellingAmt;
+    private BigDecimal ageGrade30SellingAmt;
 
     @JsonProperty("AGRDE_40_SELNG_AMT")
-    private long ageGrade40SellingAmt;
+    private BigDecimal ageGrade40SellingAmt;
 
     @JsonProperty("AGRDE_50_SELNG_AMT")
-    private long ageGrade50SellingAmt;
+    private BigDecimal ageGrade50SellingAmt;
 
     @JsonProperty("AGRDE_60_ABOVE_SELNG_AMT")
-    private long ageGrade60AboveSellingAmt;
+    private BigDecimal ageGrade60AboveSellingAmt;
 
     @JsonProperty("MDWK_SELNG_CO")
     private long midweekSellingCount;
