@@ -1,5 +1,6 @@
 "use client"
 
+import useInitToken from "@/libs/hook/useInitToken"
 import styled from "styled-components"
 import Layout from "@/components/display/Layout"
 
@@ -9,6 +10,7 @@ interface PageLayoutProps extends React.PropsWithChildren {
 
 const PageLayout = (props: PageLayoutProps) => {
   const { children } = props
+  useInitToken()
 
   return (
     <Layout>
