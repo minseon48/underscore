@@ -22,7 +22,6 @@ public class IncomeConsumption {
     private AdministrativeDistrict administrativeDistrict;
 
     private String standardYearQuarterCode;
-    private BigDecimal monthlyAverageIncomeAmount;
     private String incomeSectionCode;
     private BigDecimal totalExpenditureAmount;
     private BigDecimal groceriesExpenditureAmount;
@@ -41,7 +40,6 @@ public class IncomeConsumption {
     public IncomeConsumption(AdministrativeDistrict dong, IncomeConsumptionDTO incomeConsumptionDTO){
         this.administrativeDistrict = dong;
         this.standardYearQuarterCode = incomeConsumptionDTO.getStandardYearQuarterCode();
-        this.monthlyAverageIncomeAmount = incomeConsumptionDTO.getMonthlyAverageIncomeAmount();
         this.incomeSectionCode = incomeConsumptionDTO.getIncomeSectionCode();
         this.totalExpenditureAmount = incomeConsumptionDTO.getTotalExpenditureAmount();
         this.groceriesExpenditureAmount = incomeConsumptionDTO.getGroceriesExpenditureAmount();
