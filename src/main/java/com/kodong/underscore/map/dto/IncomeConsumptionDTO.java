@@ -18,9 +18,6 @@ public class IncomeConsumptionDTO {
     @JsonProperty("ADSTRD_CD_NM")
     private String adstrdCodeName;
 
-    @JsonProperty("MT_AVRG_INCOME_AMT")
-    private BigDecimal monthlyAverageIncomeAmount;
-
     @JsonProperty("INCOME_SCTN_CD")
     private String incomeSectionCode;
 
