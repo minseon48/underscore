@@ -7,6 +7,7 @@ import com.kodong.underscore.map.repository.AdministrativeDistrictRepository;
 import com.kodong.underscore.map.repository.BusinessAttractionRepository;
 import com.kodong.underscore.map.repository.ServiceIndustryRepository;
 import com.kodong.underscore.map.repository.StoreRepository;
+import com.kodong.underscore.map.util.AdministrativeCodeNormalizer;
 import com.kodong.underscore.map.util.ServiceName;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -76,8 +77,10 @@ public class StoreBatchConfig {
                                                          ServiceIndustryRepository serviceIndustryRepository, StoreRepository storeRepository) {
         return storeDTO -> {
 
+            String code = AdministrativeCodeNormalizer.toAdministrativeOrganizationCode(storeDTO.getAdstrdCode());
+
             AdministrativeDistrict dong = administrativeDistrictRepository
-                    .findByAdministrativeCode(storeDTO.getAdstrdCode())
+                    .findByAdministrativeCode(code)
                     .orElse(null);
 
             ServiceIndustry industry = serviceIndustryRepository
