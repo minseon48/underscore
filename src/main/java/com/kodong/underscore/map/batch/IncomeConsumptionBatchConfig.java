@@ -6,6 +6,7 @@ import com.kodong.underscore.map.entity.*;
 import com.kodong.underscore.map.repository.AdministrativeDistrictRepository;
 import com.kodong.underscore.map.repository.BusinessAttractionRepository;
 import com.kodong.underscore.map.repository.IncomeConsumptionRepository;
+import com.kodong.underscore.map.util.AdministrativeCodeNormalizer;
 import com.kodong.underscore.map.util.ServiceName;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -93,8 +94,10 @@ public class IncomeConsumptionBatchConfig {
     @Bean
     public ItemProcessor<IncomeConsumptionDTO,IncomeConsumption> incomeConsumptionProcessor(AdministrativeDistrictRepository administrativeDistrictRepository, IncomeConsumptionRepository incomeConsumptionRepository){
         return incomeConsumptionDTO -> {
+            String code = AdministrativeCodeNormalizer.toAdministrativeOrganizationCode(incomeConsumptionDTO.getAdstrdCode());
+
             AdministrativeDistrict dong = administrativeDistrictRepository
-                    .findByAdministrativeCode(incomeConsumptionDTO.getAdstrdCode())
+                    .findByAdministrativeCode(code)
                     .orElse(null);
 
             // 행정동이 null일 경우 확인용 로그
