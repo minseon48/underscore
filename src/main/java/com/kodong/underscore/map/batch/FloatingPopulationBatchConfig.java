@@ -6,6 +6,7 @@ import com.kodong.underscore.map.entity.*;
 import com.kodong.underscore.map.repository.AdministrativeDistrictRepository;
 import com.kodong.underscore.map.repository.BusinessAttractionRepository;
 import com.kodong.underscore.map.repository.FloatingPopulationRepository;
+import com.kodong.underscore.map.util.AdministrativeCodeNormalizer;
 import com.kodong.underscore.map.util.ServiceName;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -78,8 +79,11 @@ public class FloatingPopulationBatchConfig {
     @Bean
     public ItemProcessor<FloatingPopulationDTO,FloatingPopulation> floatingPopulationProcessor(AdministrativeDistrictRepository administrativeDistrictRepository, FloatingPopulationRepository floatingPopulationRepository){
         return floatingPopulationDTO -> {
+
+            String code = AdministrativeCodeNormalizer.toAdministrativeOrganizationCode(floatingPopulationDTO.getAdstrdCode());
+
             AdministrativeDistrict dong =
-                            administrativeDistrictRepository.findByAdministrativeCode(floatingPopulationDTO.getAdstrdCode())
+                            administrativeDistrictRepository.findByAdministrativeCode(code)
                             .orElse(null);
 
             if(dong == null){

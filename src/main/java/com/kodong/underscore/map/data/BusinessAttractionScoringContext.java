@@ -23,7 +23,7 @@ public class BusinessAttractionScoringContext {
     * LL:다이나믹, LH:상권확장, HH:정체, HL:상권축소*/
     private final List<String> indexQuarterlyQuotientThresholds= new ArrayList<>(Arrays.asList("LL","HH","HL","LH"));
     //기준 연도·분기 코드
-    private String standardYearQuarterCode = "20254";
+    private String standardYearQuarterCode = "20261";
 
 
     public List<ServiceIndustry> getServiceIndustryList() {

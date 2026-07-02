@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useQuery } from "@tanstack/react-query"
-import { getCacheKey } from "@/libs/cache"
+import { getCacheKey, getToken } from "@/libs/cache"
 import { TypeBusinessListAllId, mapKey } from "@/queries/api/map"
 import { TypeFetchList } from "@/types/cache"
 
@@ -9,7 +9,17 @@ export type TypeSearchBusinessResult = {
 }
 
 export const fetchSearchBusinessList: TypeFetchList<TypeSearchBusinessResult, TypeBusinessListAllId> = async (page) => {
-  const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/map/serviceIndustryData`)
+  const token = await getToken()
+
+  if (!token) {
+    return {}
+  }
+
+  const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/map/serviceIndustryData`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
   return data
 }
 

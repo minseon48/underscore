@@ -32,7 +32,7 @@ public enum ServiceName {
     IncomeConsumption( "IncomeConsumptionData.csv",
                               new String[]{
         "standardYearQuarterCode", "adstrdCode", "adstrdCodeName",
-                "monthlyAverageIncomeAmount", "incomeSectionCode",
+                "incomeSectionCode",
                 "totalExpenditureAmount", "groceriesExpenditureAmount", "clothesFootwearExpenditureAmount", "leisureSpecialExpenditureAmount",
                 "medicalCarePharmacyExpenditureAmount", "transportExpenditureAmount", "educationExpenditureAmount",
                 "pleasureExpenditureAmount", "leisureCultureExpenditureAmount", "etcExpenditureAmount", "foodExpenditureAmount"

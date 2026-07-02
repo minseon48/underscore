@@ -6,6 +6,7 @@ import com.kodong.underscore.map.entity.*;
 import com.kodong.underscore.map.repository.AdministrativeDistrictRepository;
 import com.kodong.underscore.map.repository.BusinessAttractionRepository;
 import com.kodong.underscore.map.repository.IndexQuarterlyQuotientRepository;
+import com.kodong.underscore.map.util.AdministrativeCodeNormalizer;
 import com.kodong.underscore.map.util.ServiceName;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -73,8 +74,10 @@ public class IndexQuarterlyQuotientBatchConfig {
     @Bean
     public ItemProcessor<IndexQuarterlyQuotientDTO, IndexQuarterlyQuotient> indexQuarterlyQuotientProcessor(AdministrativeDistrictRepository administrativeDistrictRepository, IndexQuarterlyQuotientRepository indexQuarterlyQuotientRepository) {
         return indexQuarterlyQuotientDTO -> {
+            String code = AdministrativeCodeNormalizer.toAdministrativeOrganizationCode(indexQuarterlyQuotientDTO.getAdstrdCode());
+
             AdministrativeDistrict dong = administrativeDistrictRepository
-                    .findByAdministrativeCode(indexQuarterlyQuotientDTO.getAdstrdCode())
+                    .findByAdministrativeCode(code)
                     .orElse(null);
 
             // 행정동이 null일 경우 확인용 로그

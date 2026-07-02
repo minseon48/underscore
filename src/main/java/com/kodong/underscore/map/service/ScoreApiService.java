@@ -204,7 +204,9 @@ public class ScoreApiService {
 
         for(AdministrativeDistrict administrativeDistrict : administrativeDistrictsInSeoul){
             BusinessAttractionDTO businessAttractionDTO = makeBusinessAttractionDTOForLoggedInUser(serviceIndustry, administrativeDistrict);
-            businessAttractionDTOS.add(businessAttractionDTO);
+            if (businessAttractionDTO != null) {
+                businessAttractionDTOS.add(businessAttractionDTO);
+            }
         }
 
 
@@ -228,14 +230,19 @@ public class ScoreApiService {
                 .build();
 
         Optional<BusinessAttraction> businessAttraction = businessAttractionRepository.findById(id);
+        if (businessAttraction.isEmpty()) {
+            return null;
+        }
 
         return BusinessAttractionDTO.builder()
-                .id(administrativeDistrict.getId())
+                .administrativeCode(administrativeDistrict.getAdministrativeCode())
                 .administrativeDistrictName(administrativeDistrict.getFullAddress())
                 .businessAttractionScores(businessAttraction.get().getScoresForLoggedInUser())
                 .totalScore(businessAttraction.get().getTotalScore())
-                .xLongitude(administrativeDistrict.getXLongitude())
-                .yLatitude(administrativeDistrict.getYLatitude())
+                .coordinates(BusinessAttractionDTO.Coordinates.builder()
+                        .latitude(administrativeDistrict.getYLatitude())
+                        .longitude(administrativeDistrict.getXLongitude())
+                        .build())
                 .build();
     }
 
@@ -263,7 +270,9 @@ public class ScoreApiService {
 
         for(AdministrativeDistrict administrativeDistrict : administrativeDistrictsInSeoul){
             BusinessAttractionDTO businessAttractionDTO = makeBusinessAttractionDTOForGuestUser(serviceIndustry, administrativeDistrict);
-            businessAttractionDTOS.add(businessAttractionDTO);
+            if (businessAttractionDTO != null) {
+                businessAttractionDTOS.add(businessAttractionDTO);
+            }
         }
 
         return BusinessAttractionResponse.builder()
@@ -286,17 +295,22 @@ public class ScoreApiService {
                 .build();
 
         Optional<BusinessAttraction> businessAttraction = businessAttractionRepository.findById(id);
-        int[] scores = businessAttraction.get().getScoresForGuestUser();
+        if (businessAttraction.isEmpty()) {
+            return null;
+        }
 
+        int[] scores = businessAttraction.get().getScoresForGuestUser();
         int sum = Arrays.stream(scores).sum();
 
         return BusinessAttractionDTO.builder()
-                .id(administrativeDistrict.getId())
+                .administrativeCode(administrativeDistrict.getAdministrativeCode())
                 .administrativeDistrictName(administrativeDistrict.getFullAddress())
                 .businessAttractionScores(scores)
                 .totalScore(sum)
-                .xLongitude(administrativeDistrict.getXLongitude())
-                .yLatitude(administrativeDistrict.getYLatitude())
+                .coordinates(BusinessAttractionDTO.Coordinates.builder()
+                        .latitude(administrativeDistrict.getYLatitude())
+                        .longitude(administrativeDistrict.getXLongitude())
+                        .build())
                 .build();
     }
 
@@ -336,7 +350,7 @@ public class ScoreApiService {
     * 현재는 서울만 제공하고 있음*/
     private boolean checkContainsUnserviceableArea(List<AdministrativeDistrict> districts){
         for(AdministrativeDistrict district : districts){
-            if(district.getAdministrativeCode().startsWith("11")){
+            if(!district.getAdministrativeCode().startsWith("11")){
                 return true; //서비스 불가인 경우
             }
         }

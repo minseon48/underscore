@@ -3,6 +3,8 @@ package com.kodong.underscore.map.repository;
 import com.kodong.underscore.map.entity.AdministrativeDistrict;
 import com.kodong.underscore.map.entity.ServiceIndustry;
 import com.kodong.underscore.map.entity.Store;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,5 +17,6 @@ public interface StoreRepository extends JpaRepository<Store,Long> {
             String standardYearQuarterCode, AdministrativeDistrict administrativeDistrict, ServiceIndustry serviceIndustry
     );
     List<Store> findAllByServiceIndustryAndStandardYearQuarterCodeOrderBySimilarIndustryStoreCount(ServiceIndustry serviceIndustry, String standardYearQuarterCode);
+    Page<Store> findByStandardYearQuarterCode(String standardYearQuarterCode, Pageable pageable);
 
 }
