@@ -7,6 +7,7 @@ import com.kodong.underscore.map.repository.AdministrativeDistrictRepository;
 import com.kodong.underscore.map.repository.BusinessAttractionRepository;
 import com.kodong.underscore.map.repository.SellingRepository;
 import com.kodong.underscore.map.repository.ServiceIndustryRepository;
+import com.kodong.underscore.map.util.AdministrativeCodeNormalizer;
 import com.kodong.underscore.map.util.ServiceName;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -88,12 +89,11 @@ public class SellingBatchConfig {
     public ItemProcessor<SellingDTO, Selling> sellingProcessor(AdministrativeDistrictRepository administrativeDistrictRepository,
                                                                ServiceIndustryRepository serviceIndustryRepository, SellingRepository sellingRepository) {
         return sellingDTO -> {
-            if(sellingDTO.getAdstrdCode().equals("1126062000")||sellingDTO.getAdstrdCode().equals("1126061000")){
-                log.info("AdministrativeCode : {}    AdministrativeName : {} ServiceIndustryCode : {}    ServiceIndustryName : {}"
-                        ,sellingDTO.getAdstrdCode(),sellingDTO.getAdstrdCodeName(),sellingDTO.getServiceIndustryCode(),sellingDTO.getServiceIndustryCodeName());
-            }
+
+            String code = AdministrativeCodeNormalizer.toAdministrativeOrganizationCode(sellingDTO.getAdstrdCode());
+
             AdministrativeDistrict dong = administrativeDistrictRepository
-                    .findByAdministrativeCode(sellingDTO.getAdstrdCode())
+                    .findByAdministrativeCode(code)
                     .orElse(null);
 
             ServiceIndustry industry = serviceIndustryRepository
