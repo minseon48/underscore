@@ -57,4 +57,21 @@ public class BatchJobController {
 
         return "Batch job has been invoked";
     }
+
+
+    @GetMapping("/run-business-attraction-job")
+    public String runBusinessAttractionJob() throws Exception{
+        JobParameters jobParameters = new JobParametersBuilder()
+                .addLong("time", System.currentTimeMillis())
+                .toJobParameters();
+
+
+        scoreApiService.putAllServiceIndustryDataInScoringContext();
+
+        log.info("businessAttractionInitJob started");
+
+        jobLauncher.run(businessAttractionInitJob, jobParameters);
+
+        return "Business attraction job has been invoked";
+    }
 }
