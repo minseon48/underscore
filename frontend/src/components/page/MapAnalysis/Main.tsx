@@ -58,7 +58,7 @@ const MapAnalysisMain = (props: MapAnalysisMainProps) => {
 
   const makeOverlayOption = (analysis: TypeSearchAnalysisResult["businessAttractions"][number]) => {
     return {
-      id: analysis.legalDistrictCode,
+      id: analysis.administrativeCode,
       content: `<strong>${analysis.administrativeDistrictName.match(/\S+$/)?.[0] ?? ""}</strong><span>${analysis.totalScore}점</span>`,
       coordinates: {
         latitude: parseFloat(`${analysis.coordinates.latitude}`),
@@ -79,7 +79,7 @@ const MapAnalysisMain = (props: MapAnalysisMainProps) => {
   // TODO
   const onSave = (analysis: TypeSearchAnalysisResult["businessAttractions"][number]) => {
     postMyplaceDetailAsync({
-      id: analysis.legalDistrictCode,
+      id: analysis.administrativeCode,
       addressName: analysis.administrativeDistrictName,
       coordinates: analysis.coordinates,
     })
@@ -152,10 +152,10 @@ const MapAnalysisMain = (props: MapAnalysisMainProps) => {
               }
               return (
                 <AnalysisView.Item
-                  key={analysis.legalDistrictCode}
+                  key={analysis.administrativeCode}
                   labels={analysisData.labels}
                   data={analysis}
-                  data-target-id={`overlay${analysis.legalDistrictCode}`}
+                  data-target-id={`overlay${analysis.administrativeCode}`}
                   tabIndex={0}
                   onMouseOver={() => onOverlayFocus(options)}
                   onMouseOut={() => onOverlayBlur(options)}

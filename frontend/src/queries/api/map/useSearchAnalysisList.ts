@@ -10,7 +10,7 @@ export type TypeSearchAnalysisResult = {
   includesUnserviceableAreas: boolean
   labels: [string, string, string, string, string, string]
   businessAttractions: {
-    legalDistrictCode: string
+    administrativeCode: string
     administrativeDistrictName: string
     businessAttractionScores: [number, number, number, number, number, number]
     totalScore: number

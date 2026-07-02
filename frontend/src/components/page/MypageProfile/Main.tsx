@@ -4,6 +4,8 @@ import Link from "next/link"
 import styled from "styled-components"
 import MypageView from "@/components/display/MypageView"
 import { convertDateToString } from "@/libs/utils"
+
+import useInitToken from "@/libs/hook/useInitToken"
 import useSearchMembership from "@/queries/api/user/useSearchMembership"
 import useSearchProfile from "@/queries/api/user/useSearchProfile"
 import { MembershipOptionGroups, TypeSubscriptionCode } from "@/components/form/ChangeMembership/type"
@@ -16,7 +18,8 @@ export interface MypageProfileMainProps extends React.HTMLAttributes<HTMLDivElem
 const MypageProfileMain = (props: MypageProfileMainProps) => {
   const { className = "", ...restProps } = props
 
-  const { data: profileData } = useSearchProfile()
+  const { tokenReady } = useInitToken()
+  const { data: profileData } = useSearchProfile({ enabled: tokenReady})
   const { data: membershipData } = useSearchMembership()
 
   return (

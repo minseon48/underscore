@@ -1,5 +1,8 @@
 "use client"
 
+import useInitToken from "@/libs/hook/useInitToken"
+import useSearchUserInfo from "@/queries/api/user/useSearchUserInfo"
+
 import Link from "next/link"
 import styled from "styled-components"
 import AuthView from "@/components/display/AuthView"
@@ -12,12 +15,16 @@ export interface AuthJoinCompleteMainProps extends React.HTMLAttributes<HTMLDivE
 const AuthJoinCompleteMain = (props: AuthJoinCompleteMainProps) => {
   const { className = "", ...restProps } = props
 
+  const { tokenReady } = useInitToken()
+  const { data } = useSearchUserInfo({ enabled: tokenReady })
+
+
   return (
     <AuthJoinCompleteMainContainer className={`${className}`} {...restProps}>
       <AuthView.Header>
         <h2>회원가입 완료</h2>
         <p>
-          <span className="text-primary">홍길동</span>님, 환영합니다!
+          <span className="text-primary">{data?.name ?? "회원"}</span>님, 환영합니다!
           <br />
           Underscore 서비스를 이용해보세요
         </p>

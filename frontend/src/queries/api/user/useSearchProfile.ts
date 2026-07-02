@@ -10,9 +10,13 @@ export type TypeSearchProfileResult = {
   email: string
 }
 
+type UseSearchProfileOptions = {
+    enabled?: boolean
+    }
+
 export const fetchSearchProfile: TypeFetchList<TypeSearchProfileResult, null> = async (key) => {
   const token = await getToken()
-  const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/profile`, {
+  const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/user/info`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -20,13 +24,14 @@ export const fetchSearchProfile: TypeFetchList<TypeSearchProfileResult, null> = 
   return data
 }
 
-const useSearchProfile = () => {
+const useSearchProfile = (options?: UseSearchProfileOptions) => {
   const context = useQuery({
     queryKey: getCacheKey(userKey).profile.default.toKey(),
     queryFn: async () => {
       const data = await fetchSearchProfile(null, {})
       return data
     },
+    enabled: options?.enabled ?? false,
   })
 
   return {
