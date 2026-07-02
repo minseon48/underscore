@@ -6,10 +6,17 @@ import lombok.Data;
 @Builder
 @Data
 public class BusinessAttractionDTO {
-    private Long id;
+    private String administrativeCode;
     private String administrativeDistrictName; //행정동 이름
     private int[] businessAttractionScores; // 개업매력도 분야별 점수
     private int totalScore; //총 점
-    private double xLongitude;
-    private double yLatitude;
+    private Coordinates coordinates;
+
+
+    @Data @Builder
+    public static class Coordinates{
+        private double longitude;
+        private double latitude;
+    }
+
 }
