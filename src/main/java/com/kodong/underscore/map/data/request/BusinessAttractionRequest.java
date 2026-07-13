@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @Builder
 public class BusinessAttractionRequest {
-    private Long administrativeDistrictId;
+    private String administrativeCode;
 
     private double minXLongitude;
 

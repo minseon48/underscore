@@ -2,8 +2,10 @@ package com.kodong.underscore.map.controller;
 
 
 import com.kodong.underscore.auth.dto.CustomOAuth2User;
+import com.kodong.underscore.map.data.report.BusinessAttractionReportResponseDTO;
 import com.kodong.underscore.map.data.request.BusinessAttractionRequest;
 import com.kodong.underscore.map.data.response.BusinessAttractionResponse;
+import com.kodong.underscore.map.service.BusinessAttractionReportService;
 import com.kodong.underscore.map.service.ScoreApiService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,7 +23,7 @@ import java.util.Map;
 public class ScoreApiController {
 
     private final ScoreApiService scoreApiService;
-
+    private final BusinessAttractionReportService businessAttractionReportService;
 
 
 
@@ -46,6 +48,21 @@ public class ScoreApiController {
                 scoreApiService.getBusinessAttractionsForGuestUser(request);
 
         return ResponseEntity.ok().body(response);
+
+    }
+
+
+    @PostMapping("/business-attraction-report")
+    public ResponseEntity<Object> businessAttractionReport(@AuthenticationPrincipal CustomOAuth2User user, @RequestBody BusinessAttractionRequest request){
+
+        if(user == null){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다.");
+        }
+
+        BusinessAttractionReportResponseDTO report = businessAttractionReportService.getReport(request);
+
+        return ResponseEntity.ok(report);
+
 
     }
 

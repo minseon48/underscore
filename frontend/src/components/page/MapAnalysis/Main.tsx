@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { useForm } from "react-hook-form"
 import styled from "styled-components"
@@ -9,9 +9,11 @@ import useSearchProfile from "@/queries/api/user/useSearchProfile"
 import useSearchBusinessList from "@/queries/api/map/useSearchBusinessList"
 import useSearchAnalysisList, { TypeSearchAnalysisResult } from "@/queries/api/map/useSearchAnalysisList"
 import useMutationMyplaceDetail from "@/queries/api/user/useMutationMyplaceDetail"
+import useSearchAnalysisReport from "@/queries/api/map/useSearchAnalysisReport"
 import SearchBusiness, { TypeSearchBusiness } from "@/components/form/SearchBusiness"
 import PanelView, { PanelViewSubjectStatusCode } from "@/components/display/PanelView"
 import AnalysisView from "@/components/display/AnalysisView"
+import AnalysisReport from "@/components/display/AnalysisReport"
 import Alert, { AlertStatusCode } from "@/components/feedback/Alert"
 import Button from "@/components/general/Button"
 import Icon from "@/components/general/Icon"
@@ -54,6 +56,25 @@ const MapAnalysisMain = (props: MapAnalysisMainProps) => {
     businessCode,
   })
 
+
+  const [reportTarget, setReportTarget] = useState<{
+      administrativeCode: string
+      businessCode: string
+      } | null>(null)
+
+
+  const {
+      data: reportData,
+      isLoading: isReportLoading,
+      isError: isReportError,
+      } = useSearchAnalysisReport(
+          {
+              administrativeCode: reportTarget?.administrativeCode ?? "",
+              businessCode: reportTarget?.businessCode ?? "",
+              },
+          { enabled: !!reportTarget },
+          )
+
   const { postMyplaceDetailAsync, postMyplaceDetailStatus } = useMutationMyplaceDetail()
 
   const makeOverlayOption = (analysis: TypeSearchAnalysisResult["businessAttractions"][number]) => {
@@ -73,8 +94,23 @@ const MapAnalysisMain = (props: MapAnalysisMainProps) => {
 
   // TODO
   const onReport = (analysis: TypeSearchAnalysisResult["businessAttractions"][number]) => {
-    console.log("onReport", analysis)
+      //1)비로그인 -> API 호출하지 않고 안내만
+      if(!profileData){
+          return
+          }
+
+
+      //2) 리포트 대상 설정
+      setReportTarget({
+          administrativeCode: analysis.administrativeCode,
+          businessCode, //useMap의 businessCode
+          })
   }
+
+const onCloseReport = () => {
+    setReportTarget(null)
+    }
+
 
   // TODO
   const onSave = (analysis: TypeSearchAnalysisResult["businessAttractions"][number]) => {
@@ -219,6 +255,16 @@ const MapAnalysisMain = (props: MapAnalysisMainProps) => {
             서비스 상권: 서울특별시
           </span>
         </PanelView.Message>
+      )}
+
+  /*리포트 UI*/
+  {reportTarget && (
+      <AnalysisReport
+        data={reportData}
+        isLoading={isReportLoading}
+        isError={isReportError}
+        onClose={onCloseReport}
+        />
       )}
     </MapAnalysisMainContainer>
   )
