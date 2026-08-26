@@ -33,7 +33,7 @@ const MypagePaymentDetailMain = (props: MypagePaymentDetailMainProps) => {
       <MypageView.Row>
         <MypageView.Group>
           <MypageView.Label>주문번호</MypageView.Label>
-          <MypageView.Text>{paymentData?.id}</MypageView.Text>
+          <MypageView.Text>{paymentData?.orderId}</MypageView.Text>
         </MypageView.Group>
         <MypageView.Group>
           <MypageView.Label>결제시간</MypageView.Label>
