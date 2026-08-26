@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import styled from "styled-components"
 import { convertDateToString, getDiffDate } from "@/libs/utils"
 import useSearchMembership from "@/queries/api/user/useSearchMembership"
+import useMutationLeave from "@/queries/api/payment/useMutationLeave"
 import MypageView from "@/components/display/MypageView"
 import { MembershipOptionGroups, TypeSubscriptionCode } from "@/components/form/ChangeMembership/type"
 import Alert from "@/components/feedback/Alert"
@@ -21,13 +22,22 @@ const MypageLeaveMembershipMain = (props: MypageLeaveMembershipMainProps) => {
   const router = useRouter()
   const { data: membershipData } = useSearchMembership()
 
+
+
   const onKeep = () => {
     router.back()
   }
 
+
+  const { postLeaveAsync, postLeaveStatus } = useMutationLeave()
+
   // TODO
-  const onLeave = () => {
-    console.log("onLeave")
+  const onLeave = async () => {
+    try{
+        await postLeaveAsync()
+        router.push("/mypage/profile")
+    }catch{
+    }
   }
 
   return (
