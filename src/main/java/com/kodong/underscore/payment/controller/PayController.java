@@ -5,9 +5,11 @@ import com.kodong.underscore.auth.entity.User;
 import com.kodong.underscore.payment.dto.*;
 import com.kodong.underscore.payment.service.PaymentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -48,6 +50,18 @@ public class PayController {
     }
 
 
+    @GetMapping("/history")
+    public PaymentHistoryListDTO getPaymentHistory(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
+                                                   @RequestParam(defaultValue = "1") int page,
+                                                   @RequestParam(defaultValue = "10") int size,
+                                                   @RequestParam(required = false) String paymentStateCode,
+                                                   @RequestParam(required = false) LocalDate startDate,
+                                                   @RequestParam(required = false) LocalDate endDate){
+        PaymentHistoryListDTO paymentInfoHistory = paymentService.getPaymentInfoHistory(customOAuth2User, page, size,paymentStateCode, startDate, endDate);
+
+        return paymentInfoHistory;
+    }
+
     @GetMapping("/{id}")
     public PaymentDetailDTO getPaymentDetailInfo(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
                                                  @PathVariable Long id){
@@ -58,5 +72,7 @@ public class PayController {
         return detailPayment;
 
     }
+
+
 
 }
