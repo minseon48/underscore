@@ -28,6 +28,7 @@ public class PaymentConfirmResponse {
     private final int balanceAmount;//취소할 수 있는 금액
     private final int suppliedAmount;//공급가액
     private final String method;//결제수단
+    private final Receipt receipt;//영수증
 
 
 
@@ -51,5 +52,9 @@ public class PaymentConfirmResponse {
         private final String message;
     }
 
+    @Data
+    public static class Receipt{
+        private final String url;
+    }
 }
 
