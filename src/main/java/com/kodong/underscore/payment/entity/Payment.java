@@ -38,4 +38,5 @@ public class Payment {
 
     @Enumerated(EnumType.STRING)
     private PaymentState paymentState;
+    private String receiptUrl;
 }

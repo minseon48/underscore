@@ -145,7 +145,9 @@ const MypagePaymentDetailMainState = styled.span`
 `
 
 const MypagePaymentDetailMainContainer = styled(MypageView)`
-  /*  */
+  strong + span {
+    display: block;
+  }
 `
 
 export default MypagePaymentDetailMain

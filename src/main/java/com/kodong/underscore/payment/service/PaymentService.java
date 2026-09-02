@@ -9,13 +9,15 @@ import com.kodong.underscore.membership.entity.UserMembership;
 import com.kodong.underscore.membership.repository.MembershipPlanRepository;
 import com.kodong.underscore.membership.repository.UserMembershipRepository;
 import com.kodong.underscore.payment.PaymentState;
-import com.kodong.underscore.payment.dto.PaymentConfirmResponse;
-import com.kodong.underscore.payment.dto.PaymentDetailDTO;
-import com.kodong.underscore.payment.dto.PaymentResponse;
+import com.kodong.underscore.payment.dto.*;
 import com.kodong.underscore.payment.entity.Payment;
 import com.kodong.underscore.payment.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -24,12 +26,10 @@ import org.springframework.web.client.RestClient;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.util.Base64;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -119,6 +119,8 @@ public class PaymentService {
         payment.setPaymentState(PaymentState.DONE);
         payment.setPaymentMethod(toss.getMethod());
         payment.setPaymentDate(OffsetDateTime.parse(toss.getApprovedAt()).toLocalDateTime());
+
+        if(toss.getReceipt() != null) payment.setReceiptUrl(toss.getReceipt().getUrl());
 
         if(toss.getCard() != null){
             payment.setPaymentInfo(toss.getCard().getApproveNo());
@@ -221,5 +223,83 @@ public class PaymentService {
                 .build();
 
 
+    }
+
+
+
+    //결제내역 보여주기
+    public PaymentHistoryListDTO getPaymentInfoHistory(CustomOAuth2User customOAuth2User, int page, int size, String paymentStateCode, LocalDate startDate, LocalDate endDate){
+
+
+        User user = userRepository.findByUsername(customOAuth2User.getUsername());
+
+        if(user == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다.");
+        }
+
+        PaymentState state = toPaymentState(paymentStateCode);
+        LocalDateTime start = (startDate != null) ? startDate.atStartOfDay() : null;
+        LocalDateTime end = (endDate != null) ? endDate.atTime(23, 59, 59) : null;
+
+        boolean hasState = state != null;
+        boolean hasStart = start != null;
+        boolean hasEnd = end != null;
+
+        Pageable pageable = PageRequest.of(page - 1, size, Sort.by("id").descending());
+
+        Page<Payment> payments = paymentRepository.searchHistory(
+                user,
+                PaymentState.READY,
+                hasState,
+                hasState ? state : PaymentState.DONE,
+                hasStart,
+                hasStart ? start : LocalDateTime.of(1000, 1, 1, 0, 0),
+                hasEnd,
+                hasEnd ? end : LocalDateTime.of(9999, 12, 31, 23, 59, 59),
+                pageable);
+
+        List<PaymentHistoryDTO> historyList = new ArrayList<>();
+
+        for(Payment payment : payments.getContent()){
+            LocalDateTime paymentDate = payment.getPaymentDate();
+            LocalDateTime expiredDate = null;
+
+            if(paymentDate != null && payment.getMembershipPlan() != null){
+                expiredDate = paymentDate.plusMonths(payment.getMembershipPlan().getPeriod());
+            }
+
+
+            historyList.add(PaymentHistoryDTO.builder()
+                    .id(payment.getId())
+                    .orderId(payment.getOrderId())
+                    .subscriptionCode(payment.getMembershipPlan().getMembershipCode())
+                    .expiredDate(expiredDate)
+                    .effectiveDate(paymentDate)
+                    .paymentMethod(payment.getPaymentMethod())
+                    .paymentAmount(payment.getPaymentAmount())
+                    .paymentState(payment.getPaymentState().toClientCode())
+                    .paymentDate(paymentDate)
+                    .receiptUrl(payment.getReceiptUrl())
+                    .build());
+        }
+
+        return PaymentHistoryListDTO.builder()
+                .count(historyList.size())
+                .totalCount(payments.getTotalElements())
+                .items(historyList)
+                .build();
+    }
+
+    private PaymentState toPaymentState(String paymentStateCode) {
+        if(paymentStateCode == null || paymentStateCode.equals("All")){
+            return null;//상태 조건 없음
+        }
+
+        return switch (paymentStateCode){
+            case "PaymentCompleted" -> PaymentState.DONE;
+            case "PaymentFailed" -> PaymentState.FAIL;
+            case "CancellationComplete" -> PaymentState.CANCEL;
+            default -> null;
+        };
     }
 }
