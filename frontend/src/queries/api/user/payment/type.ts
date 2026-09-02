@@ -1,10 +1,9 @@
-import { TypePaymentPeriodCode, TypePaymentStateCode } from "@/components/form/SearchPayment"
+import { TypePaymentStateCode } from "@/components/form/SearchPayment"
 
 export type TypePaymentListAllId = number
 export type TypePaymentListAllFilter = {
   size: number
   paymentStateCode: TypePaymentStateCode
-  paymentPeriodCode: TypePaymentPeriodCode
   startDate?: Date
   endDate?: Date
 }
