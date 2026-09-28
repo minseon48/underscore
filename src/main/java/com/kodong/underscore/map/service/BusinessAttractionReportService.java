@@ -1,5 +1,8 @@
 package com.kodong.underscore.map.service;
 
+import com.kodong.underscore.auth.dto.CustomOAuth2User;
+import com.kodong.underscore.auth.entity.User;
+import com.kodong.underscore.auth.repository.UserRepository;
 import com.kodong.underscore.map.data.BusinessAttractionScoringContext;
 import com.kodong.underscore.map.data.GlobalData;
 import com.kodong.underscore.map.data.report.*;
@@ -7,6 +10,8 @@ import com.kodong.underscore.map.data.request.BusinessAttractionRequest;
 import com.kodong.underscore.map.data.response.BusinessAttractionResponse;
 import com.kodong.underscore.map.entity.*;
 import com.kodong.underscore.map.repository.*;
+import com.kodong.underscore.membership.entity.UserMembership;
+import com.kodong.underscore.membership.repository.UserMembershipRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -30,8 +35,10 @@ public class BusinessAttractionReportService {
     private final BusinessAttractionRepository businessAttractionRepository;
     private final StoreRepository storeRepository;
     private final SellingRepository sellingRepository;
+    private final UserMembershipRepository userMembershipRepository;
+    private final UserRepository userRepository;
 
-    public BusinessAttractionReportResponseDTO getReport(@RequestBody BusinessAttractionRequest request){
+    public BusinessAttractionReportResponseDTO getReport(CustomOAuth2User customAuthUser, @RequestBody BusinessAttractionRequest request){
         AdministrativeDistrict administrativeDistrict = administrativeDistrictRepository.findByAdministrativeCode(request.getAdministrativeCode()).orElseThrow();
         ServiceIndustry serviceIndustry = serviceIndustryRepository.findByServiceIndustryCode(request.getServiceIndustryCode()).orElseThrow();
 
@@ -64,6 +71,17 @@ public class BusinessAttractionReportService {
                 .serviceIndustryCode(serviceIndustry.getServiceIndustryCode())
                 .serviceIndustryName(serviceIndustry.getServiceIndustryName())
                 .build();
+
+
+
+        User user = userRepository.findByUsername(customAuthUser.getUsername());
+        UserMembership userMembership = userMembershipRepository.findByUser(user)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"해당 유저의 멤버십이 존재하지 않습니다."));
+
+
+        userMembership.increaseUsageCount();
+
+        userMembershipRepository.save(userMembership);
 
         return attachStoreAndSellingInfo(reportResponseDTO,administrativeDistrict,serviceIndustry);
     }
