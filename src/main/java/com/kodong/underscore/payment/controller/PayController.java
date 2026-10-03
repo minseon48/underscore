@@ -45,8 +45,11 @@ public class PayController {
     }
 
     @PostMapping("/leave")
-    public void leaveMembership(@AuthenticationPrincipal CustomOAuth2User user){
-        paymentService.refundMembership(user);
+    public Map<String,Long> leaveMembership(@AuthenticationPrincipal CustomOAuth2User user,
+                                @RequestBody CancelRequest cancelRequest){
+        Long paymentId = paymentService.refundMembership(user,cancelRequest.getCancelReason());
+
+        return Map.of("paymentId",paymentId);
     }
 
 
