@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PaymentRepository extends JpaRepository<Payment,Long> {
@@ -36,4 +37,6 @@ public interface PaymentRepository extends JpaRepository<Payment,Long> {
             @Param("hasEnd") boolean hasEnd,
             @Param("end") LocalDateTime end,
             Pageable pageable);
+
+    Optional<Payment> findFirstByUserAndPaymentStateOrderByIdDesc(User user, PaymentState paymentState);
 }
