@@ -24,7 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -116,6 +115,7 @@ public class PaymentService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"결제 승인에 실패했습니다.");
         }
 
+        payment.setPaymentKey(paymentKey);
         payment.setPaymentState(PaymentState.DONE);
         payment.setPaymentMethod(toss.getMethod());
         payment.setPaymentDate(OffsetDateTime.parse(toss.getApprovedAt()).toLocalDateTime());
@@ -174,20 +174,71 @@ public class PaymentService {
     }
 
 
-    public void refundMembership(CustomOAuth2User customOAuth2User){
-        User user = userRepository.findByUsername(customOAuth2User.getUsername());
-        MembershipPlan freePlan = membershipPlanRepository.findByMembershipCode(SubscriptionCode.FREE)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"무료 멤버십이 없습니다."));
+    public Long refundMembership(CustomOAuth2User customOAuth2User, String cancelReason){
 
+        if(cancelReason == null || cancelReason.isBlank()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"환불 사유를 선택해주세요.");
+        }
+
+        if(cancelReason.length() > 200){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"환불 사유는 200자 이하여야 합니다.");
+        }
+
+        User user = userRepository.findByUsername(customOAuth2User.getUsername());
 
         UserMembership membership = userMembershipRepository.findByUser(user)
                 .orElseThrow(()-> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,"이용권 정보가 없습니다."));
 
+        if(membership.getCurrentPlan().getMembershipCode() == SubscriptionCode.FREE){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"유료 이용권만 종료할 수 있습니다.");
+        }
+
+        Payment payment = paymentRepository.findFirstByUserAndPaymentStateOrderByIdDesc(user,PaymentState.DONE)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"환불할 결제 정보가 없습니다."));
+
+        if(payment.getPaymentKey() == null || payment.getPaymentKey().isBlank()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"결제키가 없어 환불할 수 없습니다.");
+        }
+        
+        PaymentCancelResponse toss = requestTossCancel(payment.getPaymentKey(), cancelReason);
+
+        if (!"CANCELED".equals(toss.getStatus())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "결제 취소에 실패했습니다.");
+        }
+
+        MembershipPlan freePlan = membershipPlanRepository.findByMembershipCode(SubscriptionCode.FREE)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"무료 멤버십이 없습니다."));
+
+        payment.setPaymentState(PaymentState.CANCEL);
+        paymentRepository.save(payment);
 
         membership.toFree(freePlan);
         userMembershipRepository.save(membership);
 
+        return payment.getId();
+
+    }
+
+    private PaymentCancelResponse requestTossCancel(String paymentKey, String cancelReason) {
+        String encoded = Base64.getEncoder()
+                .encodeToString((tossSecretKey + ":").getBytes(StandardCharsets.UTF_8));
+
+        Map<String, Object> body = Map.of("cancelReason",cancelReason);
+
+        try{
+            return RestClient.create()
+                    .post()
+                    .uri("https://api.tosspayments.com/v1/payments/{paymentKey}/cancel",paymentKey)
+                    .header("Authorization","Basic " + encoded)
+                    .header("Idempotency-Key",UUID.randomUUID().toString())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(body)
+                    .retrieve()
+                    .body(PaymentCancelResponse.class);
+        }catch(Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"토스 결제 취소 요청에 실패했습니다.",e);
+        }
     }
 
     public PaymentDetailDTO getDetailPayment(CustomOAuth2User customOAuth2User, Long paymentId){
