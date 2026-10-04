@@ -30,6 +30,7 @@ public class Payment {
     @Column(nullable = false,unique = true)
     private String orderId;
 
+    private String paymentKey;
     private String paymentMethod;
     private String paymentInfo;
     private Long paymentAmount;
