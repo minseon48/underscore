@@ -76,9 +76,6 @@ const MypageProfileMain = (props: MypageProfileMainProps) => {
               {`유효기간 ${convertDateToString(new Date(membershipData?.effectiveDate))} ~ ${convertDateToString(new Date(membershipData?.expirationDate))}`}
             </MypageView.Text>
           )}
-          {membershipData?.paymentAmount && (
-            <MypageView.Text>결제금액 {membershipData?.paymentAmount?.toLocaleString("ko-KR")}원</MypageView.Text>
-          )}
         </MypageView.Group>
       </MypageView.Row>
       <MypageView.Action>

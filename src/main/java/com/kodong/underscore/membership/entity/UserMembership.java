@@ -31,6 +31,8 @@ public class UserMembership {
     private LocalDateTime startedAt;//시작일
     private LocalDateTime expiredAt;//만료일
 
+    private int usageCount;
+
 
 
     public static UserMembership createFree(User user, MembershipPlan freePlan){
@@ -49,6 +51,7 @@ public class UserMembership {
         this.startedAt = null;
         this.expiredAt = null;
         this.currentPlan = freePlan;
+        this.nextPlan = freePlan;
 
     }
     public void Activate(MembershipPlan plan, LocalDateTime startedAt, LocalDateTime expiredAt){
@@ -56,5 +59,10 @@ public class UserMembership {
         this.nextPlan = plan;
         this.startedAt = startedAt;
         this.expiredAt = expiredAt;
+        this.usageCount = 0;
+    }
+
+    public void increaseUsageCount(){
+        this.usageCount++;
     }
 }

@@ -59,7 +59,7 @@ public class ScoreApiController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다.");
         }
 
-        BusinessAttractionReportResponseDTO report = businessAttractionReportService.getReport(request);
+        BusinessAttractionReportResponseDTO report = businessAttractionReportService.getReport(user,request);
 
         return ResponseEntity.ok(report);
 
