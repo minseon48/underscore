@@ -3,8 +3,11 @@
 import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { useQueryClient } from "@tanstack/react-query"
 import styled from "styled-components"
+import { getCacheKey } from "@/libs/cache"
 import { convertDateToString, getDiffDate } from "@/libs/utils"
+import { userKey } from "@/queries/api/user"
 import useSearchMembership from "@/queries/api/user/useSearchMembership"
 import useMutationLeave from "@/queries/api/payment/useMutationLeave"
 import MypageView from "@/components/display/MypageView"
@@ -29,6 +32,7 @@ const MypageLeaveMembershipMain = (props: MypageLeaveMembershipMainProps) => {
   const { className = "", ...restProps } = props
 
   const router = useRouter()
+  const queryClient = useQueryClient()
   const { data: membershipData } = useSearchMembership()
   const [isConfirmOpen, setIsConfirmOpen] = useState(false)
   const [cancelReason, setCancelReason] = useState("")
