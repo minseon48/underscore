@@ -2,8 +2,10 @@ package com.kodong.underscore.map.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 
 @Builder
+@Getter
 @Data
 public class BusinessAttractionDTO {
     private String administrativeCode;
