@@ -30,7 +30,7 @@ const MyplaceViewFolder = (props: MyplaceViewFolderProps) => {
                   수정
                 </Button>
                 )}
-            {onDelete && (
+            {onDelete && !data.isDefault && (
                 <Button type="button" shape="plain" variants="secondary" size="sm" onClick={onDelete}>
                   삭제
                 </Button>
