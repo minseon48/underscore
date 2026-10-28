@@ -11,6 +11,7 @@ export const TypeIconName = {
   ["Environment"]: "Environment",
   ["ExclamationCircle"]: "ExclamationCircle",
   ["ExclamationCircleFilled"]: "ExclamationCircleFilled",
+  ["Folder"]: "Folder",
   ["InfoCircle"]: "InfoCircle",
   ["InfoCircleFilled"]: "InfoCircleFilled",
   ["Left"]: "Left",
