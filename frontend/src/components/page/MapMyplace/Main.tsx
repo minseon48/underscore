@@ -96,7 +96,7 @@ const MapMyplaceMain = (props: MapMyplaceMainProps) => {
     isFetching: isGroupFetching,
     isError: isGroupError,
   } = useSearchMyplaceGroupList()
-  const { postMyplaceGroupAsync, postMyplaceGroupStatus } = useMutationMyplaceGroup()
+  const { postMyplaceGroupAsync, postMyplaceGroupStatus, deleteMyplaceGroupAsync } = useMutationMyplaceGroup()
   const { postMyplaceDetailAsync,
           postMyplaceDetailStatus,
           deleteMyplaceDetailAsync,
@@ -273,12 +273,25 @@ const MapMyplaceMain = (props: MapMyplaceMainProps) => {
   }
 
   const onDeletePlace = async (placeId: number) => {
-      if(!confirm("이 장소를 삭제할까요?")) return
-      try{
-          await deleteMyplaceDetailAsync({ id: placeId })
-          }catch{
-              }
-          }
+    if (!confirm("이 장소를 삭제할까요?")) return
+    try {
+      await deleteMyplaceDetailAsync({ id: placeId })
+    } catch {
+      //
+    }
+  }
+
+  const onDeleteGroup = async (groupId: number) => {
+    if (!confirm("그룹을 삭제할까요? 그룹에 저장된 장소도 함께 삭제됩니다.")) return
+    try {
+      await deleteMyplaceGroupAsync({ id: groupId })
+      if (selectedGroupId === groupId) {
+        setSelectedGroupId(null)
+      }
+    } catch {
+      //
+    }
+  }
 
   useEffect(() => {
     if (!isInitialized || selectedGroupId == null || isPlaceFormOpen) return
@@ -447,6 +460,7 @@ const MapMyplaceMain = (props: MapMyplaceMainProps) => {
                   key={group.id}
                   data={group}
                   onOpen={() => onOpenGroup(group.id)}
+                  onDelete={() => onDeleteGroup(group.id)}
                 />
               ))}
             </MyplaceView.Group>
