@@ -9,8 +9,11 @@ import useSearchProfile from "@/queries/api/user/useSearchProfile"
 import useSearchBusinessList from "@/queries/api/map/useSearchBusinessList"
 import useSearchAnalysisList, { TypeSearchAnalysisResult } from "@/queries/api/map/useSearchAnalysisList"
 import useMutationMyplaceDetail from "@/queries/api/user/useMutationMyplaceDetail"
+import useSearchMyplaceGroupList from "@/queries/api/user/useSearchMyplaceGroupList"
+import useSearchMembership from "@/queries/api/user/useSearchMembership"
 import useSearchAnalysisReport from "@/queries/api/map/useSearchAnalysisReport"
 import SearchBusiness, { TypeSearchBusiness } from "@/components/form/SearchBusiness"
+import { TypeSubscriptionCode } from "@/components/form/ChangeMembership/type"
 import PanelView, { PanelViewSubjectStatusCode } from "@/components/display/PanelView"
 import AnalysisView from "@/components/display/AnalysisView"
 import AnalysisReport from "@/components/display/AnalysisReport"
@@ -42,6 +45,7 @@ const MapAnalysisMain = (props: MapAnalysisMainProps) => {
   })
 
   const { data: profileData } = useSearchProfile()
+  const { data: membershipData } = useSearchMembership()
 
   const { data: businessData } = useSearchBusinessList(searchBusiness.watch("page"))
 
@@ -76,6 +80,7 @@ const MapAnalysisMain = (props: MapAnalysisMainProps) => {
           )
 
   const { postMyplaceDetailAsync, postMyplaceDetailStatus } = useMutationMyplaceDetail()
+  const { data: myplaceGroupData } = useSearchMyplaceGroupList()
 
   const makeOverlayOption = (analysis: TypeSearchAnalysisResult["businessAttractions"][number]) => {
     return {
@@ -111,10 +116,17 @@ const onCloseReport = () => {
     setReportTarget(null)
     }
 
+const showMembershipAlert = !membershipData || membershipData.subscriptionCode === TypeSubscriptionCode.Free
 
-  // TODO
+  // TODO: 그룹 선택 UI로 확장
   const onSave = (analysis: TypeSearchAnalysisResult["businessAttractions"][number]) => {
+    const defaultGroup = myplaceGroupData?.find((group) => group.isDefault) ?? myplaceGroupData?.[0]
+    if (!defaultGroup) {
+      alert("저장할 그룹이 없습니다. 내장소 탭에서 그룹을 먼저 확인해주세요.")
+      return
+    }
     postMyplaceDetailAsync({
+      groupId: defaultGroup.id,
       id: analysis.administrativeCode,
       addressName: analysis.administrativeDistrictName,
       coordinates: analysis.coordinates,
@@ -157,6 +169,7 @@ const onCloseReport = () => {
           }}
           handleValid={onSubmit}
         >
+        {showMembershipAlert && (
           <MapAnalysisMainAlert statusCode={AlertStatusCode.Info} statusMessage="asdf" hasIcon={true}>
             지금 멤버십에 가입하면 개업 매력도 전체 그래프와 분석 리포트를 확인 할 수 있어요
             <br />
@@ -166,6 +179,7 @@ const onCloseReport = () => {
               </Button>
             </Link>
           </MapAnalysisMainAlert>
+          )}
         </SearchBusiness>
       </PanelView.Filter>
       <PanelView.Subject
@@ -257,7 +271,7 @@ const onCloseReport = () => {
         </PanelView.Message>
       )}
 
-  /*리포트 UI*/
+  {/* 리포트 UI */}
   {reportTarget && (
       <AnalysisReport
         data={reportData}
