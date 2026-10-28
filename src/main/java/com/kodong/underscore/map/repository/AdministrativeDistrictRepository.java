@@ -1,8 +1,10 @@
 package com.kodong.underscore.map.repository;
 
 import com.kodong.underscore.map.entity.AdministrativeDistrict;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,4 +16,14 @@ public interface AdministrativeDistrictRepository extends JpaRepository<Administ
 
     @Query("SELECT ad FROM AdministrativeDistrict ad WHERE ad.xLongitude BETWEEN :minXLongitude AND :maxXLongitude AND ad.yLatitude BETWEEN :minYLatitude AND :maxYLatitude")
     List<AdministrativeDistrict> findByXLongitudeBetweenAndYLatitudeBetween(double minXLongitude, double maxXLongitude, double minYLatitude, double maxYLatitude);
+
+    @Query("""
+            SELECT ad FROM AdministrativeDistrict ad
+            WHERE ad.siDo LIKE %:keyword%
+                OR ad.siGunGu LIKE %:keyword%
+                OR ad.administrativeDong LIKE %:keyword%
+                OR CONCAT(ad.siDo, ' ', ad.siGunGu, ' ', ad.administrativeDong) LIKE %:keyword%
+            ORDER BY ad.siDo, ad.siGunGu, ad.administrativeDong
+            """)
+    List<AdministrativeDistrict> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
 }
