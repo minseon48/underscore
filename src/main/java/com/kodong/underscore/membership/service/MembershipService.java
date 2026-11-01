@@ -11,11 +11,19 @@ import com.kodong.underscore.membership.repository.UserMembershipRepository;
 import com.kodong.underscore.payment.PaymentState;
 import com.kodong.underscore.payment.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class MembershipService {
@@ -24,6 +32,8 @@ public class MembershipService {
     private final MembershipPlanRepository membershipPlanRepository;
     private final UserMembershipRepository userMembershipRepository;
     private final PaymentRepository paymentRepository;
+
+    private static final ZoneId KST = ZoneId.of("Asia/Seoul");
 
     @Transactional
     public MembershipResponse getMembership(String username) {
@@ -41,12 +51,29 @@ public class MembershipService {
 
     private MembershipResponse toResponse(UserMembership userMembership) {
         SubscriptionCode code = userMembership.getCurrentPlan().getMembershipCode();
+        LocalDateTime expiredAt = userMembership.getExpiredAt();
+
+        Integer daysUntilExpiration = null;
+        boolean showRenewalNotice = false;
+
+        if(code != SubscriptionCode.FREE && expiredAt != null){
+            LocalDate today = LocalDate.now();
+            LocalDate expiredDate = expiredAt.toLocalDate();
+
+            long days = ChronoUnit.DAYS.between(today,expiredDate);
+
+            daysUntilExpiration = (int) days;
+            showRenewalNotice = days >= 0 && days <= 3;
+        }
+
 
         MembershipResponse.MembershipResponseBuilder builder = MembershipResponse.builder()
                 .isSubscribed(code != SubscriptionCode.FREE)
                 .subscriptionCode(code.getValue())
                 .startedAt(userMembership.getStartedAt())
-                .expiredAt(userMembership.getExpiredAt());
+                .expiredAt(expiredAt)
+                .daysUntilExpiration(daysUntilExpiration)
+                .showRenewalNotice(showRenewalNotice);
 
         if (code != SubscriptionCode.FREE) {
             paymentRepository
@@ -76,5 +103,26 @@ public class MembershipService {
         UserMembership membership = UserMembership.createFree(user, freePlan);
 
         return userMembershipRepository.save(membership);
+    }
+
+
+    @Transactional
+    public int convertExpiredMembershipsToFree() {
+        LocalDateTime todayStart = LocalDate.now(KST).atStartOfDay();//오늘 기준
+
+        MembershipPlan freePlan = membershipPlanRepository
+                .findByMembershipCode(SubscriptionCode.FREE)
+                .orElseThrow(()-> new IllegalStateException("무료 멤버십이 없습니다."));
+
+        List<UserMembership> expiredList = userMembershipRepository
+                .findExpiredPaidMemberships(SubscriptionCode.FREE,todayStart);
+
+        for(UserMembership membership : expiredList){
+            membership.toFree(freePlan);
+        }
+
+        userMembershipRepository.saveAll(expiredList);
+        log.info("만료 멤버십 무료 전환 완료 : {}건 (기준시각={})", expiredList.size(), todayStart);
+        return expiredList.size();
     }
 }
