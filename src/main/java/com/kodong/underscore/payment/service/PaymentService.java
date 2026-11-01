@@ -162,13 +162,28 @@ public class PaymentService {
 
     private void activeMembership(User user, MembershipPlan plan){
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime expiredAt = now.plusMonths(plan.getPeriod());
+        LocalDate today = now.toLocalDate();
 
         UserMembership membership = userMembershipRepository.findByUser(user)
                         .orElseThrow(() -> new ResponseStatusException(
                                 HttpStatus.NOT_FOUND, "이용권 정보가 없습니다."));
 
-        membership.Activate(plan,now,expiredAt);
+        LocalDateTime currentExpiredAt = membership.getExpiredAt();
+        LocalDateTime startedAt;
+        LocalDateTime newExpiredAt;
+
+
+        boolean stillActive = currentExpiredAt != null && currentExpiredAt.toLocalDate().isAfter(today);
+
+        if(stillActive){
+           startedAt = membership.getStartedAt() != null ? membership.getStartedAt() : now;
+           newExpiredAt = currentExpiredAt.plusMonths(plan.getPeriod());
+        }else{
+            //만료전을 제외한 경우
+            startedAt = now;
+            newExpiredAt = now.plusMonths(plan.getPeriod());
+        }
+        membership.Activate(plan,startedAt,newExpiredAt);
         userMembershipRepository.save(membership);
 
     }
