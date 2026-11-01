@@ -21,4 +21,8 @@ public class MembershipResponse {
     private String paymentInfo;
     private Integer paymentAmount;
     private Integer refundAmount;
+
+    /*만료까지 남은 일수(만료일이면 0, 지났으면 음수)*/
+    private Integer daysUntilExpiration;
+    private boolean showRenewalNotice;
 }
