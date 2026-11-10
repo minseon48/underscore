@@ -21,6 +21,7 @@ export const TypeIconName = {
   ["Menu"]: "Menu",
   ["Picture"]: "Picture",
   ["Pin"]: "Pin",
+  ["Plus"]: "Plus",
   ["Reload"]: "Reload",
   ["Right"]: "Right",
   ["Search"]: "Search",
