@@ -28,7 +28,7 @@ import java.util.List;
 public class MyplaceService {
 
     private static final int MAX_MEMO_LENGTH = 100;
-    private static final int MAX_PLACE_COUNT = 100;
+    private static final int MAX_PLACE_COUNT = 20;
 
     private final MyplaceRepository myplaceRepository;
     private final MyplaceGroupRepository myplaceGroupRepository;
