@@ -21,7 +21,7 @@ public class MyplaceGroupResponse {
                 .name(group.getName())
                 .isDefault(group.isDefaultGroup())
                 .placeCount(placeCount)
-                .maxCount(100)
+                .maxCount(20)
                 .build();
     }
 }
