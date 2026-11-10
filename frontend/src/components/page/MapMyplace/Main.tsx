@@ -500,7 +500,7 @@ const MapMyplaceMain = (props: MapMyplaceMainProps) => {
           {isGroupFull && (
               <PanelView.Message>
                 <strong>
-                  이 그룹에는 최대 <em>100개</em>까지 저장할 수 있어요
+                  이 그룹에는 최대 <em>20개</em>까지 저장할 수 있어요
                 </strong>
                 <span>다른 그룹을 만들거나 기존 장소를 정리해 주세요</span>
               </PanelView.Message>

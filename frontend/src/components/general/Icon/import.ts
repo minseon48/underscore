@@ -20,6 +20,7 @@ export * from "@/components/general/Icon/data/Mail"
 export * from "@/components/general/Icon/data/Menu"
 export * from "@/components/general/Icon/data/Picture"
 export * from "@/components/general/Icon/data/Pin"
+export * from "@/components/general/Icon/data/Plus"  // 추가
 export * from "@/components/general/Icon/data/Reload"
 export * from "@/components/general/Icon/data/Right"
 export * from "@/components/general/Icon/data/Search"
