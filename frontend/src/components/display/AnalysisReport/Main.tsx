@@ -64,7 +64,7 @@ const AnalysisReport = ({ data, isLoading, isError, onClose }: Props) => {
 
     return (
         <Backdrop onClick={onClose}>
-            <Panel onClick={(e) => e.stopPropagation()}>
+            <Panel onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}>
                 <CloseButton type="button" onClick={onClose}>닫기</CloseButton>
 
                 {isLoading && <Status>리포트 로딩중...</Status>}
