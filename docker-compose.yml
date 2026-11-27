@@ -14,6 +14,8 @@ services:
       - mysql-data:/var/lib/mysql
     ports:
       - "127.0.0.1:3306:3306"
+    restart: always
+
   underscore-app:
     container_name: underscore-app
     build: .
@@ -40,5 +42,34 @@ services:
       SPRING_KSTARTUP_SERVICE_KEY: ${SPRING_KSTARTUP_SERVICE_KEY}
       SPRING_SGIS_CONSUMER_KEY: ${SPRING_SGIS_CONSUMER_KEY}
       SPRING_SGIS_CONSUMER_SECRET: ${SPRING_SGIS_CONSUMER_SECRET}
-
     restart: always
+
+  underscore-frontend:
+    container_name: underscore-frontend
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+        NEXT_PUBLIC_API_KAKAO_URL: ${NEXT_PUBLIC_API_KAKAO_URL}
+        NEXT_PUBLIC_API_KAKAO_JS_KEY: ${NEXT_PUBLIC_API_KAKAO_JS_KEY}
+        NEXT_PUBLIC_API_KAKAO_REST_KEY: ${NEXT_PUBLIC_API_KAKAO_REST_KEY}
+        NEXT_PUBLIC_API_WORLD_URL: ${NEXT_PUBLIC_API_WORLD_URL}
+        NEXT_PUBLIC_API_WORLD_KEY: ${NEXT_PUBLIC_API_WORLD_KEY}
+        NEXT_PUBLIC_TOSS_CLIENT_KEY: ${NEXT_PUBLIC_TOSS_CLIENT_KEY}
+    image: underscore-frontend
+    depends_on:
+      - underscore-app
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+      NEXT_PUBLIC_API_KAKAO_URL: ${NEXT_PUBLIC_API_KAKAO_URL}
+      NEXT_PUBLIC_API_KAKAO_JS_KEY: ${NEXT_PUBLIC_API_KAKAO_JS_KEY}
+      NEXT_PUBLIC_API_KAKAO_REST_KEY: ${NEXT_PUBLIC_API_KAKAO_REST_KEY}
+      NEXT_PUBLIC_API_WORLD_URL: ${NEXT_PUBLIC_API_WORLD_URL}
+      NEXT_PUBLIC_API_WORLD_KEY: ${NEXT_PUBLIC_API_WORLD_KEY}
+      NEXT_PUBLIC_TOSS_CLIENT_KEY: ${NEXT_PUBLIC_TOSS_CLIENT_KEY}
+    restart: always
+
+volumes:
+  mysql-data:
