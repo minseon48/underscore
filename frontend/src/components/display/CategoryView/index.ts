@@ -1,6 +1,6 @@
 import CategoryViewMain, { CategoryViewMainProps } from "@/components/display/CategoryView/Main"
 import CategoryViewGroup, { CategoryViewGroupProps } from "@/components/display/CategoryView/Group"
-import CategoryViewItem, { CategoryViewItemProps } from "@/components/display/CategoryView/item.tsx"
+import CategoryViewItem, { CategoryViewItemProps } from "@/components/display/CategoryView/Item"
 
 export type { CategoryViewMainProps, CategoryViewGroupProps, CategoryViewItemProps }
 

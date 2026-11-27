@@ -13,6 +13,7 @@ export interface InputMainProps<T extends FieldValues = object> extends React.HT
   disabled?: boolean
   readOnly?: boolean
   placeholder?: string
+  maxLength?: number
   autoComplete?: "on" | "off"
   max?: string | number
   min?: string | number
