@@ -44,7 +44,7 @@ const Labels: { [key in string]: string } = {
 
 const AnalysisViewItem: AnalysisViewItemComponent = forwardRef(function AnalysisViewItem<
   C extends React.ElementType = "div",
->(props: AnalysisViewItemProps<C>, ref?: PolymorphicRef<C>): React.ReactNode {
+>(props: AnalysisViewItemProps<C>, ref?: PolymorphicRef<C>): React.ReactElement | null {
   const { asTag, labels, data, className = "", onReport, onSave, ...restProps } = props
 
   const radarData: ChartData<"radar"> = {

@@ -25,7 +25,7 @@ const ChecklistViewBoard = (props: ChecklistViewBoardProps) => {
 
   if (isCreate) {
     return (
-      <CreateButton type="button" className={className} onClick={onCreate} {...restProps}>
+      <CreateButton type="button" className={className} onClick={onCreate}>
         <Icon name="Plus" aria-hidden={true} />
         <span className="sr-only">체크리스트 만들기</span>
       </CreateButton>
