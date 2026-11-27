@@ -1,0 +1,28 @@
+package com.kodong.underscore.membership.dto;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.Data;
+
+import java.time.LocalDateTime;
+
+@Data
+@Builder
+public class MembershipResponse {
+    private boolean isSubscribed;
+    private String subscriptionCode;
+
+    @JsonProperty("effectiveDate")
+    private LocalDateTime startedAt;
+
+    @JsonProperty("expirationDate")
+    private LocalDateTime expiredAt;
+    private String paymentMethod;
+    private String paymentInfo;
+    private Integer paymentAmount;
+    private Integer refundAmount;
+
+    /*만료까지 남은 일수(만료일이면 0, 지났으면 음수)*/
+    private Integer daysUntilExpiration;
+    private boolean showRenewalNotice;
+}

@@ -8,9 +8,7 @@ import useSearchPaymentList, { TypeSearchPaymentListResult } from "@/queries/api
 import MypageView from "@/components/display/MypageView"
 import SearchPayment, {
   TypeSearchPayment,
-  PaymentPeriodOptionGroups,
   PaymentStateOptionGroups,
-  TypePaymentPeriodCode,
   TypePaymentStateCode,
 } from "@/components/form/SearchPayment"
 import { MembershipOptionGroups } from "@/components/form/ChangeMembership/type"
@@ -32,11 +30,9 @@ const MypagePaymentHistoryMain = (props: MypagePaymentHistoryMainProps) => {
       size: 10,
       isFiltered: false,
       paymentStateCode: TypePaymentStateCode["All"],
-      paymentPeriodCode: TypePaymentPeriodCode["All"],
       startDate: undefined,
       endDate: undefined,
       searchPaymentStateCode: TypePaymentStateCode["All"],
-      searchPaymentPeriodCode: TypePaymentPeriodCode["All"],
       searchStartDate: undefined,
       searchEndDate: undefined,
     },
@@ -45,14 +41,17 @@ const MypagePaymentHistoryMain = (props: MypagePaymentHistoryMainProps) => {
   const { data: paymentData } = useSearchPaymentList(searchPayment.watch("page"), {
     size: searchPayment.watch("size"),
     paymentStateCode: searchPayment.watch("searchPaymentStateCode"),
-    paymentPeriodCode: searchPayment.watch("searchPaymentPeriodCode"),
     startDate: searchPayment.watch("searchStartDate"),
     endDate: searchPayment.watch("searchEndDate"),
   })
 
   // TODO
   const onReceipt = (record: TypeSearchPaymentListResult["items"][number]) => {
-    console.log("onReceipt", record)
+    if(!record.receiptUrl){
+        alert("영수증을 찾을 수 없습니다.")
+        return
+    }
+    window.open(record.receiptUrl, "_blank", "noopener,noreferrer")
   }
 
   const onPaging = (page: number) => {
@@ -60,16 +59,15 @@ const MypagePaymentHistoryMain = (props: MypagePaymentHistoryMainProps) => {
   }
 
   const onSubmit = (data: TypeSearchPayment) => {
+    const hasDate = (value?: Date) => Boolean(value) && value !== ("" as unknown as Date)
     const isFiltered = !(
       data?.paymentStateCode === TypePaymentStateCode["All"] &&
-      data?.paymentStateCode === TypePaymentPeriodCode["All"] &&
-      data?.startDate === ("" as unknown as Date) &&
-      data?.endDate === ("" as unknown as Date)
+      !hasDate(data?.startDate) &&
+      !hasDate(data?.endDate)
     )
     searchPayment.setValue("page", 1)
     searchPayment.setValue("isFiltered", isFiltered)
     searchPayment.setValue("searchPaymentStateCode", data?.paymentStateCode)
-    searchPayment.setValue("searchPaymentPeriodCode", data?.paymentPeriodCode)
     searchPayment.setValue("searchStartDate", data?.startDate)
     searchPayment.setValue("searchEndDate", data?.endDate)
   }
@@ -91,7 +89,6 @@ const MypagePaymentHistoryMain = (props: MypagePaymentHistoryMainProps) => {
         }}
         formOptionGroups={{
           paymentStateCode: PaymentStateOptionGroups,
-          paymentPeriodCode: PaymentPeriodOptionGroups,
         }}
         handleValid={onSubmit}
       />
@@ -117,12 +114,14 @@ const MypagePaymentHistoryMain = (props: MypagePaymentHistoryMainProps) => {
                     MembershipOptionGroups.flatMap(({ options }) => options)?.find(
                       ({ value }) => value === subscriptionCode,
                     )?.text ?? ""
+                  const period =
+                    effectiveDate && expirationDate
+                      ? `유효기간: ${convertDateToString(new Date(effectiveDate))} ~ ${convertDateToString(new Date(expirationDate))}`
+                      : ""
                   return (
                     <>
                       <strong>{name}</strong>
-                      <span>
-                        {`유효기간: ${convertDateToString(new Date(effectiveDate))} ~ ${convertDateToString(new Date(expirationDate))}`}
-                      </span>
+                      <span>{period}</span>
                     </>
                   )
                 },
@@ -136,7 +135,8 @@ const MypagePaymentHistoryMain = (props: MypagePaymentHistoryMainProps) => {
                 key: "paymentDate",
                 title: "결제일",
                 dataIndex: "paymentDate",
-                render: (paymentDate) => `${convertDateToString(new Date(paymentDate))}`,
+                render: (_, { paymentDate }) =>
+                  paymentDate ? convertDateToString(new Date(paymentDate)) : "-",
               },
               {
                 key: "paymentState",
@@ -153,12 +153,6 @@ const MypagePaymentHistoryMain = (props: MypagePaymentHistoryMainProps) => {
                     </MypagePaymentHistoryMainState>
                   )
                 },
-              },
-              {
-                key: "billingDate",
-                title: "청구일",
-                dataIndex: "billingDate",
-                render: (billingDate) => `${convertDateToString(new Date(billingDate))}`,
               },
               {
                 key: "paymentAmount",

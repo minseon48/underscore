@@ -9,6 +9,8 @@ export type TypeSearchMembershipResult = {
   subscriptionCode: string
   effectiveDate?: Date
   expirationDate?: Date
+  daysUntilExpiration?: number | null
+  showRenewalNotice?: boolean
   paymentMethod?: string
   paymentInfo?: string
   paymentAmount?: number

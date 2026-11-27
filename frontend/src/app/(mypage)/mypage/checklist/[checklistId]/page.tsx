@@ -1,5 +1,6 @@
 import Link from "next/link"
 import Breadcrumb from "@/components/navigation/Breadcrumb"
+import MypageChecklistDetail from "@/components/page/MypageChecklistDetail"
 
 interface PageProps {
   params: {
@@ -15,11 +16,9 @@ const Page = (props: PageProps) => {
       <Breadcrumb>
         <Link href="/mypage">마이페이지</Link>
         <Link href="/mypage/checklist">체크리스트</Link>
-        <Link href={`/mypage/checklist/${params.checklistId}`}>{params.checklistId}</Link>
+        <Link href={`/mypage/checklist/${params.checklistId}`}>상세</Link>
       </Breadcrumb>
-      <section>
-        <h2>체크리스트 상세(/mypage/checklist/{params.checklistId})</h2>
-      </section>
+      <MypageChecklistDetail />
     </>
   )
 }

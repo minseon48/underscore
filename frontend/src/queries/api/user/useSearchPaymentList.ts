@@ -22,6 +22,7 @@ export type TypeSearchPaymentListResult = {
     billingDate: Date
     errorCode?: string
     errorMessage?: string
+    receiptUrl?: string
   }[]
 }
 
@@ -29,15 +30,15 @@ export const fetchSearchPaymentList: TypeFetchList<
   TypeSearchPaymentListResult,
   TypePaymentListAllId,
   TypePaymentListAllFilter
-> = async (page, { size, paymentPeriodCode, paymentStateCode, startDate, endDate }) => {
+> = async (page, { size, paymentStateCode, startDate, endDate }) => {
   const token = await getToken()
-  const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/payment`, {
+  const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/payment/history`, {
     params: {
+      page,
       size,
-      paymentPeriodCode,
       paymentStateCode,
-      startDate,
-      endDate,
+      startDate: startDate || undefined,
+      endDate: endDate || undefined,
     },
     headers: {
       Authorization: `Bearer ${token}`,
@@ -48,18 +49,17 @@ export const fetchSearchPaymentList: TypeFetchList<
 
 const useSearchPaymentList = (
   page: TypePaymentListAllId,
-  { size, paymentPeriodCode, paymentStateCode, startDate, endDate }: TypePaymentListAllFilter,
+  { size, paymentStateCode, startDate, endDate }: TypePaymentListAllFilter,
 ) => {
   const context = useQuery({
     queryKey: getCacheKey(userKey).payment.list.all.toKeyWithArgs(page, {
       size,
-      paymentPeriodCode,
       paymentStateCode,
       startDate,
       endDate,
     }),
     queryFn: async () => {
-      const data = await fetchSearchPaymentList(page, { size, paymentPeriodCode, paymentStateCode, startDate, endDate })
+      const data = await fetchSearchPaymentList(page, { size, paymentStateCode, startDate, endDate })
       return data
     },
     enabled: !!page && !!size,

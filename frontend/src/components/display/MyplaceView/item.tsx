@@ -29,6 +29,7 @@ const MyplaceViewItem: MyplaceViewItemComponent = forwardRef(function MyplaceVie
     <MyplaceViewItemContainer ref={ref} as={asTag ?? "div"} className={`${className}`} {...restProps}>
       <MyplaceViewItemContent>
         <strong className="place">{data.addressName}</strong>
+        {data.memo && <span className="memo">{data.memo}</span>}
         <div className="helper">
           {onSelect && (
             <Button
@@ -69,6 +70,16 @@ const MyplaceViewItemContent = styled.div`
     white-space: nowrap;
     text-overflow: ellipsis;
     word-break: break-all;
+  }
+  .memo {
+    margin-top: 4px;
+    display: block;
+    font-size: ${(props) => props.theme.typo.size.sm};
+    line-height: ${(props) => props.theme.typo.leading.sm};
+    color: rgb(var(--color-neutral600));
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
   .helper {
     margin-top: 4px;

@@ -7,7 +7,8 @@ export type { TypeLocationListAllId, TypeLocationListAllFilter } from "@/queries
 export type { TypeCategoryListAllId, TypeCategoryListAllFilter } from "@/queries/api/map/category/type"
 export { TypeCategoryCode } from "@/components/form/SearchCategory/type"
 export type { TypeBusinessListAllId } from "@/queries/api/map/business/type"
-export type { TypeAnalysisListAllFilter, TypeAnalysisListAllId } from "@/queries/api/map/analysis/type"
+export type { TypeAnalysisListAllFilter, TypeAnalysisListAllId, TypeAnalysisReportFilter } from "@/queries/api/map/analysis/type"
+
 
 export const mapKey = {
   location: locationMapKey,

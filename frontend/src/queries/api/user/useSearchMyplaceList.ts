@@ -10,7 +10,7 @@ export type TypeSearchMyplaceResult = {
   items: {
     id: number
     addressName: string
-    totalScore: number
+    memo: string | null
     coordinates: {
       latitude: number
       longitude: number
@@ -22,12 +22,13 @@ export const fetchSearchMyplaceList: TypeFetchList<
   TypeSearchMyplaceResult,
   TypeMyplaceListAllId,
   TypeMyplaceListAllFilter
-> = async (page, { size }) => {
+> = async (page, { size, groupId }) => {
   const token = await getToken()
   const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/myplace`, {
     params: {
       page,
       size,
+      groupId
     },
     headers: {
       Authorization: `Bearer ${token}`,
@@ -36,14 +37,14 @@ export const fetchSearchMyplaceList: TypeFetchList<
   return data
 }
 
-const useSearchMyplaceList = (page: TypeMyplaceListAllId, { size }: TypeMyplaceListAllFilter) => {
+const useSearchMyplaceList = (page: TypeMyplaceListAllId, { size, groupId }: TypeMyplaceListAllFilter) => {
   const context = useQuery({
-    queryKey: getCacheKey(userKey).myplace.list.all.toKeyWithArgs(page, { size }),
+    queryKey: getCacheKey(userKey).myplace.list.all.toKeyWithArgs(page, { size, groupId }),
     queryFn: async () => {
-      const data = await fetchSearchMyplaceList(page, { size })
+      const data = await fetchSearchMyplaceList(page, { size, groupId })
       return data
     },
-    enabled: !!page && !!size,
+    enabled: !!page && !!size && !!groupId,
   })
 
   return {

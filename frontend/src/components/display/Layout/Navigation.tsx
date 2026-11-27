@@ -1,10 +1,9 @@
 "use client"
 
-import { useEffect, useMemo } from "react"
+import { useEffect } from "react"
 import { usePathname } from "next/navigation"
 import styled, { css } from "styled-components"
 import useNavigation from "@/libs/hook/useNavigation"
-import useLogout from "@/libs/hook/useLogout"
 import useFocusTrap from "@/libs/hook/useFocusTrap"
 import Icon from "@/components/general/Icon"
 import Picture from "@/components/display/Picture"
@@ -59,23 +58,10 @@ const menuItems = [
       },
     ],
   },
-  {
-    key: "join",
-    label: "로그인",
-    href: "/auth/join",
-  },
-  // TODO
-  {
-    key: "logout",
-    label: "로그아웃",
-    onClick: () => {},
-  },
 ]
 
 const LayoutNavigation = (props: LayoutNavigationProps) => {
   const { className = "", ...restProps } = props
-
-  const { handleLogout } = useLogout()
 
   const pathname = usePathname()
   const currentPath = pathname.split("/").filter(Boolean)
@@ -95,22 +81,6 @@ const LayoutNavigation = (props: LayoutNavigationProps) => {
     if (isOpened && !isPending) onActivate()
     else onDeactivate()
   }, [isOpened, isPending, onActivate, onDeactivate])
-
-  const computedMenuItems = useMemo(
-    () =>
-      menuItems.map((item) =>
-        item.key === "logout"
-          ? {
-              ...item,
-              onClick: () => {
-                onClose()
-                handleLogout()
-              },
-            }
-          : item,
-      ),
-    [handleLogout, onClose],
-  )
 
   if (!isOpened && !isPending) return null
 
@@ -132,7 +102,7 @@ const LayoutNavigation = (props: LayoutNavigationProps) => {
           </LayoutNavigationLogo>
         </LayoutNavigationHeader>
         <LayoutNavigationMenu
-          items={computedMenuItems}
+          items={menuItems}
           defaultOpenKeys={currentPath.slice(0, currentPath.length - 1)}
           defaultSelectedKeys={currentPath}
           onNavigated={onClose}

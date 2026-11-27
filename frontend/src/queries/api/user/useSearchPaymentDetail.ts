@@ -8,6 +8,7 @@ import { TypePaymentStateCode } from "@/components/form/SearchPayment/type"
 
 export type TypeSearchPaymentDetailResult = {
   id: number
+  orderId: string
   subscriptionCode: TypeSubscriptionCode
   effectiveDate: Date
   expirationDate: Date
