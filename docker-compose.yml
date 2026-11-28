@@ -1,10 +1,7 @@
 services:
   underscore-database:
     container_name: underscore-database
-    build:
-      dockerfile: Dockerfile
-      context: ./database
-    image: underscore-database
+    image: mysql
     environment:
       - MYSQL_DATABASE=underscore
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
